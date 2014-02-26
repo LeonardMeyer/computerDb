@@ -1,6 +1,11 @@
 package com.excilys.computerdb.business.services;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.excilys.computerdb.business.dao.DaoFactory;
 import com.excilys.computerdb.business.domain.Company;
@@ -32,8 +37,7 @@ public class CompanyService implements ServiceProvider<Company> {
 
 	@Override
 	public List<Company> findAll() {
-		List<Company> foundCompanies = DaoFactory.getCompanyDao().findAll();
-		return foundCompanies;
+		return DaoFactory.getCompanyDao().findAll();
 	}
 
 	@Override
@@ -51,6 +55,10 @@ public class CompanyService implements ServiceProvider<Company> {
 	@Override
 	public void delete(Company obj) {
 		DaoFactory.getCompanyDao().delete(obj);
+	}
+	
+	public Map<Integer, String> findAllCompanyNames() {
+		return DaoFactory.getCompanyDao().findAllCompanyNames();	
 	}
 
 }

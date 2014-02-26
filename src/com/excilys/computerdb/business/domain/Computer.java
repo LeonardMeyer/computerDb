@@ -17,21 +17,22 @@ public class Computer implements Serializable {
 	private DateTime introduced;
 	private DateTime discontinued;
 	private int companyId;
+	private String companyName;
 	
 	public Computer(int computerId, String name, DateTime introduced,
-			DateTime discontinued, int companyId) {
+			DateTime discontinued, int companyId, String companyName) {
 		super();
 		this.computerId = 0;
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
 		this.companyId = companyId;
+		this.setCompanyName(companyName);
 	}
 	
 	public Computer(String name, DateTime introduced,
 			DateTime discontinued) {
 		super();
-		this.computerId = computerId;
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
@@ -76,11 +77,13 @@ public class Computer implements Serializable {
 	public void setCompanyId(int companyId) {
 		this.companyId = companyId;
 	}
-	
-	
-	
-	
-	
-	
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
 
 }

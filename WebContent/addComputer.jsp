@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="include/header.jsp" />
 <section id="main">
 
@@ -31,10 +32,9 @@
 				<label for="company">Company Name:</label>
 				<div class="input">
 					<select name="company">
-						<option value="0">--</option>
-						<option value="1">Apple</option>
-						<option value="2">Dell</option>
-						<option value="3">Lenovo</option>
+						<c:forEach items="${companyNames}" var="item" varStatus="status"> 
+							<option value="${item.key}">${item.value}</option>
+						</c:forEach> 
 					</select>
 				</div>
 			</div>

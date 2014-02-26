@@ -32,8 +32,7 @@ public class ComputerService implements ServiceProvider<Computer> {
 
 	@Override
 	public List<Computer> findAll() {
-		List<Computer> foundComputers = DaoFactory.getComputerDao().findAll();
-		return foundComputers;
+		return DaoFactory.getComputerDao().findAll();
 	}
 
 	@Override
@@ -51,6 +50,10 @@ public class ComputerService implements ServiceProvider<Computer> {
 	@Override
 	public void delete(Computer obj) {
 		DaoFactory.getComputerDao().delete(obj);
+	}
+	
+	public List<Computer> findAllInRange(int firstBound, int secondBound) {
+		return DaoFactory.getComputerDao().findAllInRange(firstBound, secondBound);
 	}
 
 }
