@@ -50,6 +50,10 @@ public class ComputerService implements ServiceProvider<Computer> {
 		return DaoFactory.getComputerDao().findAllInRange(firstBound, secondBound);
 	}
 	
+	public List<Computer> filterByName(String toSearch) {
+		return DaoFactory.getComputerDao().filterByName(toSearch);
+	}
+	
 	public int count() {
 		return DaoFactory.getComputerDao().count();
 	}

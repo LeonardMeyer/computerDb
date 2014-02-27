@@ -32,10 +32,8 @@
 				<label for="company">Company Name:</label>
 				<div class="input">
 					<select id="company" name="company">
+						<option value="-1"></option>
 						<c:forEach items="${companyNames}" var="item" varStatus="status"> 
-							<c:if test="${computerToEdit.companyId == 0}">
-								<option value="-1"></option>
-							</c:if>
 							<option value="${item.key}" ${item.key == computerToEdit.companyId ? 'selected="selected"' : ''}>${item.value}</option>
 						</c:forEach> 
 					</select>
@@ -51,8 +49,10 @@
 			    <input type="submit" value="Update"  class="btn primary">
 			  </c:otherwise>
 			</c:choose>
-			or <a href="/computer-database/" class="btn">Cancel</a> or
-			<a href="/computer-database/DeleteComputer?computerId=${computerToEdit.computerId}" class="btn danger">Delete</a>
+			or <a href="/computer-database/" class="btn">Cancel</a> 
+			<c:if test="${computerToEdit != null}">or
+				<a href="/computer-database/DeleteComputer?computerId=${computerToEdit.computerId}" class="btn danger">Delete</a>
+			</c:if>
 		</div>
 	</form>
 </section>

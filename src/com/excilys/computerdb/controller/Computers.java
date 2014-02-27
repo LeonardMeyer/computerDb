@@ -35,22 +35,23 @@ public class Computers extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int firstBound;
 		int secondBound;
+		
 		if (request.getParameter("firstBound") == null || request.getParameter("secondBound") == null) {
 			firstBound = 0;
-			secondBound = 10;
+			secondBound = 20;
 		}else{
 			firstBound = Integer.parseInt(request.getParameter("firstBound"));
 			secondBound = Integer.parseInt(request.getParameter("secondBound"));
 		}
 		if(firstBound == 0 && secondBound == 0){
 			firstBound = 0;
-			secondBound = 10;
+			secondBound = 20;
 		}
 		
 		List<Computer> computers = ComputerService.getInstance().findAllInRange(firstBound, secondBound);
 		request.setAttribute("computers", computers);
-		int computerCount = ComputerService.getInstance().count();
-		getServletContext().setAttribute("computerCount", computerCount);
+		int totalComputers = ComputerService.getInstance().count();
+		getServletContext().setAttribute("totalComputers", totalComputers);
 		RequestDispatcher rd = getServletContext().getRequestDispatcher("/dashboard.jsp");
 		rd.forward(request, response);
 	}

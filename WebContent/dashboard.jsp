@@ -2,9 +2,9 @@
 <%@ taglib uri="/WEB-INF/PaginationTag.tld" prefix="paging" %>
 <jsp:include page="include/header.jsp" />
 <section id="main">
-	<h1 id="homeTitle">${applicationScope.computerCount}</h1>
+	<h1 id="homeTitle">${applicationScope.totalComputers}</h1>
 	<div id="actions">
-		<form action="" method="GET">
+		<form action="/computer-database/SearchComputer" method="GET">
 			<input type="search" id="searchbox" name="search"
 				value="" placeholder="Search name">
 			<input type="submit" id="searchsubmit"
@@ -13,6 +13,9 @@
 		</form>
 		<a class="btn success" id="add" href="/computer-database/AddComputer">Add Computer</a>
 	</div>
+	<c:if test="${success == false}">
+		<div class="alert-message error">Ajout échoué</div>
+	</c:if>
 	<table class="computers zebra-striped">
 		<thead>
 			<tr>
@@ -37,7 +40,7 @@
 			</c:forEach> 
 		</tbody>
 	</table>
-	<paging:display totalRecords="${computerCount}" recordsPerPage="20"/>
+	<paging:display totalRecords="${totalComputers}" recordsPerPage="20"/>
 </section>
 
 <jsp:include page="include/footer.jsp" />

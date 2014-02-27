@@ -34,7 +34,6 @@ public class PaginationTag extends TagSupport {
 			}
 			out.println("</ul>");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			logger.error("Erreur d'I/O lors de la création de la pagination", e);
 		}
 		return SKIP_BODY;

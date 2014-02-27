@@ -3,6 +3,7 @@ package com.excilys.computerdb.business.domain;
 import java.io.Serializable;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 
 
@@ -14,13 +15,13 @@ public class Computer implements Serializable {
 	
 	private int computerId;
 	private String name;
-	private DateTime introduced;
-	private DateTime discontinued;
+	private LocalDate introduced;
+	private LocalDate discontinued;
 	private int companyId;
 	private String companyName;
 	
-	public Computer(int computerId, String name, DateTime introduced,
-			DateTime discontinued, int companyId, String companyName) {
+	public Computer(int computerId, String name, LocalDate introduced,
+			LocalDate discontinued, int companyId, String companyName) {
 		super();
 		this.computerId = computerId;
 		this.name = name;
@@ -30,8 +31,8 @@ public class Computer implements Serializable {
 		this.companyName = companyName;
 	}
 	
-	public Computer(int computerId, String name, DateTime introduced,
-			DateTime discontinued, int companyId) {
+	public Computer(int computerId, String name, LocalDate introduced,
+			LocalDate discontinued, int companyId) {
 		super();
 		this.computerId = computerId;
 		this.name = name;
@@ -56,19 +57,19 @@ public class Computer implements Serializable {
 		this.name = name;
 	}
 
-	public DateTime getIntroduced() {
+	public LocalDate getIntroduced() {
 		return introduced;
 	}
 
-	public void setIntroduced(DateTime introduced) {
+	public void setIntroduced(LocalDate introduced) {
 		this.introduced = introduced;
 	}
 
-	public DateTime getDiscontinued() {
+	public LocalDate getDiscontinued() {
 		return discontinued;
 	}
 
-	public void setDiscontinued(DateTime discontinued) {
+	public void setDiscontinued(LocalDate discontinued) {
 		this.discontinued = discontinued;
 	}
 

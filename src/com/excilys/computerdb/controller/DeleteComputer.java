@@ -32,11 +32,14 @@ public class DeleteComputer extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int computerId = Integer.parseInt(request.getParameter("computerId"));
-		
-		boolean success = ComputerService.getInstance().delete(computerId);
-		
-		List<Computer> computers = ComputerService.getInstance().findAllInRange(0, 10);
+		if (request.getParameter("computerId") != null) {
+			int computerId = Integer.parseInt(request.getParameter("computerId"));
+			if (computerId > 0) {
+				boolean success = ComputerService.getInstance().delete(computerId);
+			}
+		}
+
+		List<Computer> computers = ComputerService.getInstance().findAllInRange(0, 20);
 		request.setAttribute("computers", computers);
 		getServletContext().setAttribute("computerCount", computers.size());
 		RequestDispatcher rd = getServletContext().getRequestDispatcher("/dashboard.jsp");

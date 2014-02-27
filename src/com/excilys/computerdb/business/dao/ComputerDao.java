@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
@@ -46,19 +47,18 @@ public class ComputerDao extends Dao<Computer> {
 		try(PreparedStatement stmt = (PreparedStatement) conn.prepareStatement(query)) {
 			stmt.setLong(1, id);
 			ResultSet rs = stmt.executeQuery();
-			DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy").withLocale(Locale.FRANCE);
 			while (rs.next()) {
 				  int id2 = rs.getInt("id");
 				  String name = rs.getString("name");
 				  Timestamp introducedTs = rs.getTimestamp("introduced");
-				  DateTime introduced = null;
+				  LocalDate introduced = null;
 				  if (introducedTs != null) {
-					  introduced = new DateTime(introducedTs);
+					  introduced = new LocalDate(introducedTs);
 				  }
 				  Timestamp discontinuedTs = rs.getTimestamp("discontinued");
-				  DateTime discontinued = null;
+				  LocalDate discontinued = null;
 				  if (discontinuedTs != null) {
-					  discontinued = new DateTime(discontinuedTs);
+					  discontinued = new LocalDate(discontinuedTs);
 				  }
 				  int companyId = rs.getInt("company_id");
 				  String companyName = rs.getString("company.name");
@@ -66,7 +66,7 @@ public class ComputerDao extends Dao<Computer> {
 				  comp = new Computer(id2, name, introduced, discontinued, companyId, companyName);
 				}
 		} catch (SQLException e) {
-			logger.error("Erreur SQL dans la requête find", e);
+			logger.error("Erreur SQL dans la requête find Computer", e);
 		}
 		return comp;
 	}
@@ -85,18 +85,17 @@ public class ComputerDao extends Dao<Computer> {
 		try(PreparedStatement stmt = (PreparedStatement) conn.prepareStatement(query)) {
 			stmt.setInt(1, obj.getComputerId());
 			stmt.setString(2, obj.getName());
-			stmt.setTimestamp(3, new Timestamp(obj.getIntroduced().getMillis()));
-			stmt.setTimestamp(4, new Timestamp(obj.getDiscontinued().getMillis()));
+			stmt.setTimestamp(3, new Timestamp(obj.getIntroduced().toDateTimeAtStartOfDay().getMillis()));
+			stmt.setTimestamp(4, new Timestamp(obj.getDiscontinued().toDateTimeAtStartOfDay().getMillis()));
 			if (obj.getCompanyId() == -1) {
 				stmt.setNull(5, Types.INTEGER);
 			}else {
 				stmt.setInt(5, obj.getCompanyId());
 			}
-			
-			
+
 			stmt.setString(6, obj.getName());
-			stmt.setTimestamp(7, new Timestamp(obj.getIntroduced().getMillis()));
-			stmt.setTimestamp(8, new Timestamp(obj.getDiscontinued().getMillis()));
+			stmt.setTimestamp(7, new Timestamp(obj.getIntroduced().toDateTimeAtStartOfDay().getMillis()));
+			stmt.setTimestamp(8, new Timestamp(obj.getDiscontinued().toDateTimeAtStartOfDay().getMillis()));
 			if (obj.getCompanyId() == -1) {
 				stmt.setNull(9, Types.INTEGER);
 			}else {
@@ -108,7 +107,8 @@ public class ComputerDao extends Dao<Computer> {
 				success = true;
 			}
 		} catch (SQLException e) {
-			logger.error("Erreur SQL dans la requête create", e);
+			logger.error("Erreur SQL dans la requête create Computer", e);
+			return false;
 		}
 		
 		return success;
@@ -125,7 +125,7 @@ public class ComputerDao extends Dao<Computer> {
 				success = true;
 			}
 		} catch (SQLException e) {
-			logger.error("Erreur SQL dans la requête create", e);
+			logger.error("Erreur SQL dans la requête delete Computer", e);
 		}
 		
 		return success;
@@ -141,19 +141,18 @@ public class ComputerDao extends Dao<Computer> {
 			stmt.setInt(1, firstBound);
 			stmt.setInt(2, secondBound);
 			ResultSet rs = stmt.executeQuery();
-			DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy").withLocale(Locale.FRANCE);
 			while (rs.next()) {
 				  int id = rs.getInt("computer.id");
 				  String name = rs.getString("computer.name");
 				  Timestamp introducedTs = rs.getTimestamp("introduced");
-				  DateTime introduced = null;
+				  LocalDate introduced = null;
 				  if (introducedTs != null) {
-					  introduced = new DateTime(introducedTs);
+					  introduced = new LocalDate(introducedTs);
 				  }
 				  Timestamp discontinuedTs = rs.getTimestamp("discontinued");
-				  DateTime discontinued = null;
+				  LocalDate discontinued = null;
 				  if (discontinuedTs != null) {
-					  discontinued = new DateTime(discontinuedTs);
+					  discontinued = new LocalDate(discontinuedTs);
 				  }
 				  int companyId = rs.getInt("company_id");
 				  String companyName = rs.getString("company.name");
@@ -169,6 +168,42 @@ public class ComputerDao extends Dao<Computer> {
 		return foundComputers;
 	}
 	
+	public List<Computer> filterByName(String toSearch) {
+		List<Computer> foundComputers = new ArrayList<Computer>();
+		String query = "SELECT computer.id, computer.name, introduced, discontinued, company_id, company.name "
+				+ "FROM computer LEFT JOIN company ON (company.id = computer.company_id) "
+				+ "WHERE computer.name LIKE ?"
+				+ "ORDER BY computer.name";
+		try(PreparedStatement stmt = (PreparedStatement) conn.prepareStatement(query)) {
+			stmt.setString(1, "%" + toSearch + "%");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				  int id = rs.getInt("computer.id");
+				  String name = rs.getString("computer.name");
+				  Timestamp introducedTs = rs.getTimestamp("introduced");
+				  LocalDate introduced = null;
+				  if (introducedTs != null) {
+					  introduced = new LocalDate(introducedTs);
+				  }
+				  Timestamp discontinuedTs = rs.getTimestamp("discontinued");
+				  LocalDate discontinued = null;
+				  if (discontinuedTs != null) {
+					  discontinued = new LocalDate(discontinuedTs);
+				  }
+				  int companyId = rs.getInt("company_id");
+				  String companyName = rs.getString("company.name");
+
+				  Computer prod = new Computer(id, name, introduced, discontinued, companyId, companyName);
+				  foundComputers.add(prod);
+
+				}
+		} catch (SQLException e) {
+			logger.error("Erreur SQL dans la requête filterByName", e);
+		}
+		
+		return foundComputers;
+	}
+	
 	public int count() {
 		String query = "SELECT COUNT(id) FROM computer";
 		int count = 0;
@@ -178,7 +213,7 @@ public class ComputerDao extends Dao<Computer> {
 				count = rs.getInt(1);
 			}
 		} catch (SQLException e) {
-			logger.error("Erreur SQL dans la requête computer count", e);
+			logger.error("Erreur SQL dans la requête Computer count", e);
 		}
 		
 		return count;

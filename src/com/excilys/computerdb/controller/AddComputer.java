@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 import com.excilys.computerdb.business.domain.Computer;
 import com.excilys.computerdb.business.services.CompanyService;
@@ -64,12 +65,11 @@ public class AddComputer extends HttpServlet {
 			computerId = Integer.parseInt(request.getParameter("computerId"));
 		}
 
-		Computer toCreate = new Computer(computerId, computerName, new DateTime(introducedDate), new DateTime(discontinuedDate), companyId);
+		Computer toCreate = new Computer(computerId, computerName, new LocalDate(introducedDate), new LocalDate(discontinuedDate), companyId);
 		
 		boolean success = ComputerService.getInstance().create(toCreate);
-		
-		//Redirection vers dashboard (ce serait bien de séparer la logique parce que c'est dégueulasse)
-		List<Computer> computers = ComputerService.getInstance().findAllInRange(0, 10);
+		request.setAttribute("success", success);
+		List<Computer> computers = ComputerService.getInstance().findAllInRange(0, 20);
 		request.setAttribute("computers", computers);
 		getServletContext().setAttribute("computerCount", computers.size());
 		RequestDispatcher rd = getServletContext().getRequestDispatcher("/dashboard.jsp");
