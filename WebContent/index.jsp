@@ -1,3 +1,3 @@
 <%
-response.sendRedirect(request.getContextPath()+"/DisplayComputers?firstBound=0&secondBound=10");
+response.sendRedirect(request.getContextPath()+"/Computers?firstBound=0&secondBound=10");
 %>

@@ -12,6 +12,6 @@
 <body>
 	<header class="topbar">
 		<h1 class="fill">
-			<a href="/computer-database/DisplayComputers"> Application - Computer Database </a>
+			<a href="/computer-database/Computers"> Application - Computer Database </a>
 		</h1>
 	</header>

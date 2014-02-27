@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="/WEB-INF/PaginationTag.tld" prefix="paging" %>
 <jsp:include page="include/header.jsp" />
 <section id="main">
 	<h1 id="homeTitle">${applicationScope.computerCount}</h1>
@@ -10,7 +11,7 @@
 				value="Filter by name"
 				class="btn primary">
 		</form>
-		<a class="btn success" id="add" href="/computer-database/DisplayAddComputer">Add Computer</a>
+		<a class="btn success" id="add" href="/computer-database/AddComputer">Add Computer</a>
 	</div>
 	<table class="computers zebra-striped">
 		<thead>
@@ -28,7 +29,7 @@
 		<tbody>
 			<c:forEach items="${computers}" var="computer" varStatus="status"> 
 			<tr>
-			    <td><a href="lol">${computer.name}</a></td>  
+			    <td><a href="/computer-database/AddComputer?computerId=<c:out value='${computer.computerId}' />">${computer.name}</a></td>  
 			    <td>${computer.introduced}</td> 
 			    <td>${computer.discontinued}</td> 
 			    <td>${computer.companyName}</td> 
@@ -36,6 +37,7 @@
 			</c:forEach> 
 		</tbody>
 	</table>
+	<paging:display totalRecords="${computerCount}" recordsPerPage="20"/>
 </section>
 
 <jsp:include page="include/footer.jsp" />

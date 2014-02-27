@@ -41,20 +41,14 @@ public class CompanyService implements ServiceProvider<Company> {
 	}
 
 	@Override
-	public Company create(Company obj) {
-		Company createdCompany = DaoFactory.getCompanyDao().create(obj);
-		return createdCompany;
+	public boolean create(Company obj) {
+		boolean success = DaoFactory.getCompanyDao().create(obj);
+		return success;
 	}
 
 	@Override
-	public Company update(Company obj) {
-		Company updatedCompany = DaoFactory.getCompanyDao().update(obj);
-		return updatedCompany;
-	}
-
-	@Override
-	public void delete(Company obj) {
-		DaoFactory.getCompanyDao().delete(obj);
+	public boolean delete(int id) {
+		return DaoFactory.getCompanyDao().delete(id);
 	}
 	
 	public Map<Integer, String> findAllCompanyNames() {

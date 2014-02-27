@@ -4,44 +4,55 @@
 
 	<h1>Add Computer</h1>
 	
-	<form action="addComputer.jsp" method="POST">
+	<form action="/computer-database/AddComputer" method="POST">
 		<fieldset>
+			<input type="hidden" name="computerId" value="${computerToEdit.computerId}" >
 			<div class="clearfix">
 				<label for="name">Computer name:</label>
 				<div class="input">
-					<input type="text" name="name" />
+					<input type="text" name="name" value="${computerToEdit.name}" required/>
 					<span class="help-inline">Required</span>
 				</div>
 			</div>
-	
 			<div class="clearfix">
 				<label for="introduced">Introduced date:</label>
 				<div class="input">
-					<input type="date" name="introducedDate" pattern="YY-MM-dd"/>
+					<input type="date" name="introducedDate" value="${computerToEdit.introduced}" required pattern="^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])"/>
 					<span class="help-inline">YYYY-MM-DD</span>
 				</div>
 			</div>
 			<div class="clearfix">
 				<label for="discontinued">Discontinued date:</label>
 				<div class="input">
-					<input type="date" name="introducedDate" pattern="YY-MM-dd"/>
+					<input type="date" name="discontinuedDate" value="${computerToEdit.discontinued}" required pattern="^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])"/>
 					<span class="help-inline">YYYY-MM-DD</span>
 				</div>
 			</div>
 			<div class="clearfix">
 				<label for="company">Company Name:</label>
 				<div class="input">
-					<select name="company">
+					<select id="company" name="company">
 						<c:forEach items="${companyNames}" var="item" varStatus="status"> 
-							<option value="${item.key}">${item.value}</option>
+							<c:if test="${computerToEdit.companyId == 0}">
+								<option value="-1"></option>
+							</c:if>
+							<option value="${item.key}" ${item.key == computerToEdit.companyId ? 'selected="selected"' : ''}>${item.value}</option>
 						</c:forEach> 
 					</select>
 				</div>
 			</div>
 		</fieldset>
 		<div class="actions">
-			<input type="submit" value="Add" class="btn primary">
-			or <a href="dashboard.jsp" class="btn">Cancel</a>
+			<c:choose>
+			  <c:when test="${computerToEdit == null}">
+			    <input type="submit" value="Add"  class="btn primary">
+			  </c:when>
+			  <c:otherwise>
+			    <input type="submit" value="Update"  class="btn primary">
+			  </c:otherwise>
+			</c:choose>
+			or <a href="/computer-database/" class="btn">Cancel</a> or
+			<a href="/computer-database/DeleteComputer?computerId=${computerToEdit.computerId}" class="btn danger">Delete</a>
 		</div>
 	</form>
 </section>

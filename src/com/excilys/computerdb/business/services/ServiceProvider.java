@@ -23,17 +23,11 @@ public interface ServiceProvider<T> {
 	 * par rapport à un objet
 	 * @param obj
 	 */
-	public T create(T obj);
-	
-	/**
-	 * Permet de mettre à jour les données d'un objet
-	 * @param obj
-	 */
-	public T update(T obj);
+	public boolean create(T obj);
 	
 	/**
 	 * Permet la suppression d'un objet
 	 * @param obj
 	 */
-	public void delete(T obj);
+	public boolean delete(int id);
 }

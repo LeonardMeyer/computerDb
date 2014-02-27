@@ -1,24 +1,15 @@
 package com.excilys.computerdb.business.dao;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.excilys.computerdb.business.domain.Company;
-import com.excilys.computerdb.business.domain.Computer;
 
 public class CompanyDao extends Dao<Company>{
 	
@@ -54,28 +45,21 @@ public class CompanyDao extends Dao<Company>{
 	}
 
 	@Override
-	public Company create(Company obj) {
+	public boolean create(Company obj) {
 		// TODO Auto-generated method stub
-		return null;
+		return false;
 	}
 
 	@Override
-	public Company update(Company obj) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void delete(Company obj) {
-		// TODO Auto-generated method stub
-		
+	public boolean delete(int id) {
+		return false;
 	}
 	
 	public Map<Integer, String> findAllCompanyNames() {
-		Map<Integer, String> foundNames = new HashMap<Integer, String>();
-		try {
-			String query = "SELECT DISTINCT * FROM company ORDER BY name";
-			Statement stmt = (Statement) conn.createStatement();
+		//LinkedHashMap pour retenir l'ordre d'insertion
+		Map<Integer, String> foundNames = new LinkedHashMap<Integer, String>();
+		String query = "SELECT DISTINCT * FROM company ORDER BY name";
+		try(Statement stmt = (Statement) conn.createStatement()) {
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
 				int companyId = rs.getInt("id");

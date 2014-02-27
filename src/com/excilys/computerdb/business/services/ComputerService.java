@@ -36,24 +36,22 @@ public class ComputerService implements ServiceProvider<Computer> {
 	}
 
 	@Override
-	public Computer create(Computer obj) {
-		Computer createdComptuer = DaoFactory.getComputerDao().create(obj);
-		return createdComptuer;
+	public boolean create(Computer obj) {
+		boolean success = DaoFactory.getComputerDao().create(obj);
+		return success;
 	}
 
 	@Override
-	public Computer update(Computer obj) {
-		Computer updatedComputer = DaoFactory.getComputerDao().create(obj);
-		return updatedComputer;
-	}
-
-	@Override
-	public void delete(Computer obj) {
-		DaoFactory.getComputerDao().delete(obj);
+	public boolean delete(int id) {
+		return DaoFactory.getComputerDao().delete(id);
 	}
 	
 	public List<Computer> findAllInRange(int firstBound, int secondBound) {
 		return DaoFactory.getComputerDao().findAllInRange(firstBound, secondBound);
+	}
+	
+	public int count() {
+		return DaoFactory.getComputerDao().count();
 	}
 
 }
