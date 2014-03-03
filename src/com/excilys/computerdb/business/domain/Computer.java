@@ -17,28 +17,16 @@ public class Computer implements Serializable {
 	private String name;
 	private LocalDate introduced;
 	private LocalDate discontinued;
-	private int companyId;
-	private String companyName;
+	private Company company;
 	
 	public Computer(int computerId, String name, LocalDate introduced,
-			LocalDate discontinued, int companyId, String companyName) {
+			LocalDate discontinued, Company company) {
 		super();
 		this.computerId = computerId;
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
-		this.companyId = companyId;
-		this.companyName = companyName;
-	}
-	
-	public Computer(int computerId, String name, LocalDate introduced,
-			LocalDate discontinued, int companyId) {
-		super();
-		this.computerId = computerId;
-		this.name = name;
-		this.introduced = introduced;
-		this.discontinued = discontinued;
-		this.companyId = companyId;
+		this.setCompany(company);
 	}
 
 	public int getComputerId() {
@@ -73,20 +61,12 @@ public class Computer implements Serializable {
 		this.discontinued = discontinued;
 	}
 
-	public int getCompanyId() {
-		return companyId;
+	public Company getCompany() {
+		return company;
 	}
 
-	public void setCompanyId(int companyId) {
-		this.companyId = companyId;
-	}
-
-	public String getCompanyName() {
-		return companyName;
-	}
-
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 
 }

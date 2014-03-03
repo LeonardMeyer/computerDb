@@ -18,6 +18,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.excilys.computerdb.business.domain.Company;
 import com.excilys.computerdb.business.domain.Computer;
 
 public class ComputerDao extends Dao<Computer> {
@@ -70,7 +71,7 @@ public class ComputerDao extends Dao<Computer> {
 				  int companyId = rs.getInt("company_id");
 				  String companyName = rs.getString("company.name");
 
-				  comp = new Computer(id2, name, introduced, discontinued, companyId, companyName);
+				  comp = new Computer(id2, name, introduced, discontinued, new Company(companyId, companyName));
 				}
 		} catch (SQLException e) {
 			logger.error("Erreur SQL dans la requête find Computer", e);
@@ -111,19 +112,19 @@ public class ComputerDao extends Dao<Computer> {
 			stmt.setString(2, obj.getName());
 			stmt.setTimestamp(3, new Timestamp(obj.getIntroduced().toDateTimeAtStartOfDay().getMillis()));
 			stmt.setTimestamp(4, new Timestamp(obj.getDiscontinued().toDateTimeAtStartOfDay().getMillis()));
-			if (obj.getCompanyId() == -1) {
+			if (obj.getCompany().getCompanyId() == -1) {
 				stmt.setNull(5, Types.INTEGER);
 			}else {
-				stmt.setInt(5, obj.getCompanyId());
+				stmt.setInt(5, obj.getCompany().getCompanyId());
 			}
 
 			stmt.setString(6, obj.getName());
 			stmt.setTimestamp(7, new Timestamp(obj.getIntroduced().toDateTimeAtStartOfDay().getMillis()));
 			stmt.setTimestamp(8, new Timestamp(obj.getDiscontinued().toDateTimeAtStartOfDay().getMillis()));
-			if (obj.getCompanyId() == -1) {
+			if (obj.getCompany().getCompanyId() == -1) {
 				stmt.setNull(9, Types.INTEGER);
 			}else {
-				stmt.setInt(9, obj.getCompanyId());
+				stmt.setInt(9, obj.getCompany().getCompanyId());
 			}
 			
 			int rowsCreated = stmt.executeUpdate();
@@ -215,7 +216,7 @@ public class ComputerDao extends Dao<Computer> {
 				  int companyId = rs.getInt("company_id");
 				  String companyName = rs.getString("company.name");
 
-				  Computer prod = new Computer(id, name, introduced, discontinued, companyId, companyName);
+				  Computer prod = new Computer(id, name, introduced, discontinued, new Company(companyId, companyName));
 				  foundComputers.add(prod);
 
 				}
@@ -270,7 +271,7 @@ public class ComputerDao extends Dao<Computer> {
 				  int companyId = rs.getInt("company_id");
 				  String companyName = rs.getString("company.name");
 
-				  Computer prod = new Computer(id, name, introduced, discontinued, companyId, companyName);
+				  Computer prod = new Computer(id, name, introduced, discontinued, new Company(companyId, companyName));
 				  foundComputers.add(prod);
 
 				}

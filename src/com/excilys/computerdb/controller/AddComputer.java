@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
+import com.excilys.computerdb.business.domain.Company;
 import com.excilys.computerdb.business.domain.Computer;
 import com.excilys.computerdb.business.services.CompanyService;
 import com.excilys.computerdb.business.services.ComputerService;
@@ -37,7 +38,6 @@ public class AddComputer extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		if (request.getParameter("computerId") != null) {
 			int computerId = Integer.parseInt(request.getParameter("computerId"));
 			if (computerId > 0) {
@@ -65,7 +65,8 @@ public class AddComputer extends HttpServlet {
 			computerId = Integer.parseInt(request.getParameter("computerId"));
 		}
 
-		Computer toCreate = new Computer(computerId, computerName, new LocalDate(introducedDate), new LocalDate(discontinuedDate), companyId);
+		Computer toCreate = new Computer(computerId, computerName, new LocalDate(introducedDate), new LocalDate(discontinuedDate), 
+				new Company(companyId, ""));
 		
 		boolean success = ComputerService.getInstance().create(toCreate);
 		request.setAttribute("success", success);

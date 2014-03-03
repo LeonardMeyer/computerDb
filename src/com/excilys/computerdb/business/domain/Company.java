@@ -4,6 +4,7 @@
 package com.excilys.computerdb.business.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,6 +22,13 @@ public class Company implements Serializable {
 		this.companyId = companyId;
 		this.name = name;
 		this.computersId = computersId;
+	}
+	
+	public Company(int companyId, String name) {
+		super();
+		this.companyId = companyId;
+		this.name = name;
+		this.computersId = new ArrayList<>();
 	}
 
 	public int getCompanyId() {

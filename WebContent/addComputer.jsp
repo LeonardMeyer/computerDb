@@ -34,7 +34,7 @@
 					<select id="company" name="company">
 						<option value="-1"></option>
 						<c:forEach items="${companyNames}" var="item" varStatus="status"> 
-							<option value="${item.key}" ${item.key == computerToEdit.companyId ? 'selected="selected"' : ''}>${item.value}</option>
+							<option value="${item.key}" ${item.key == computerToEdit.company.companyId ? 'selected="selected"' : ''}>${item.value}</option>
 						</c:forEach> 
 					</select>
 				</div>

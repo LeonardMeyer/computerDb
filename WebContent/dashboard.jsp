@@ -35,7 +35,7 @@
 			    <td><a href="/computer-database/AddComputer?computerId=<c:out value='${computer.computerId}' />">${computer.name}</a></td>  
 			    <td>${computer.introduced}</td> 
 			    <td>${computer.discontinued}</td> 
-			    <td>${computer.companyName}</td> 
+			    <td>${computer.company.name}</td> 
 			 </tr>
 			</c:forEach> 
 		</tbody>
