@@ -52,7 +52,7 @@ public class CompanyService implements ServiceProvider<Company> {
 	}
 	
 	public Map<Integer, String> findAllCompanyNames() {
-		return DaoFactory.getCompanyDao().findAllCompanyNames();	
+		return DaoFactory.getCompanyDao().findAllNames();	
 	}
 
 }

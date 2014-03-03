@@ -8,8 +8,12 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public enum ConnectionFactory {
 	INSTANCE;
+	private Logger logger = LoggerFactory.getLogger(Logger.class);
 	private String dataSource = "java:/computerDS";
 	
 	public Connection getConnection(){
@@ -19,13 +23,9 @@ public enum ConnectionFactory {
 			ic = new InitialContext();
 			DataSource ds = (DataSource)ic.lookup(dataSource);
 			conn = (Connection) ds.getConnection();
-		} catch (NamingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} catch (NamingException | SQLException e) {
+			logger.error("Erreur lors de la récupération d'une connexion", e);
+		} 
 		return conn;
 		
 	}

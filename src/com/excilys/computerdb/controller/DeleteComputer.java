@@ -41,7 +41,7 @@ public class DeleteComputer extends HttpServlet {
 
 		List<Computer> computers = ComputerService.getInstance().findAllInRange(0, 20);
 		request.setAttribute("computers", computers);
-		getServletContext().setAttribute("computerCount", computers.size());
+		getServletContext().setAttribute("totalComputers", ComputerService.getInstance().count());
 		RequestDispatcher rd = getServletContext().getRequestDispatcher("/dashboard.jsp");
 		rd.forward(request, response);
 	}

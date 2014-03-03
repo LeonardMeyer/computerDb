@@ -71,7 +71,8 @@ public class AddComputer extends HttpServlet {
 		request.setAttribute("success", success);
 		List<Computer> computers = ComputerService.getInstance().findAllInRange(0, 20);
 		request.setAttribute("computers", computers);
-		getServletContext().setAttribute("computerCount", computers.size());
+		int totalComputers = ComputerService.getInstance().count();
+		getServletContext().setAttribute("totalComputers", totalComputers);
 		RequestDispatcher rd = getServletContext().getRequestDispatcher("/dashboard.jsp");
 		rd.forward(request, response);
 	}

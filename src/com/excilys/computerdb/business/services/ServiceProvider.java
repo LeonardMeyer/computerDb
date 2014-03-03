@@ -6,7 +6,7 @@ import com.excilys.computerdb.business.domain.Company;
 
 public interface ServiceProvider<T> {
 	/**
-	 * Permet de récupérer un objet via son ID
+	 * Permet de récupérer ou update un objet via son ID
 	 * @param id
 	 * @return
 	 */

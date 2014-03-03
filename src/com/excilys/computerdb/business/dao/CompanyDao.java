@@ -1,11 +1,13 @@
 package com.excilys.computerdb.business.dao;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,19 +57,39 @@ public class CompanyDao extends Dao<Company>{
 		return false;
 	}
 	
-	public Map<Integer, String> findAllCompanyNames() {
+	public Map<Integer, String> findAllNames() {
 		//LinkedHashMap pour retenir l'ordre d'insertion
 		Map<Integer, String> foundNames = new LinkedHashMap<Integer, String>();
 		String query = "SELECT DISTINCT * FROM company ORDER BY name";
-		try(Statement stmt = (Statement) conn.createStatement()) {
-			ResultSet rs = stmt.executeQuery(query);
+		
+		Statement stmt = null;
+		ResultSet rs = null;
+		try {
+			if(!DbSession.isSessionOpened()) {  
+				DbSession.openSession(false);
+			}  
+			Connection conn = DbSession.currentConnection();
+			stmt = (Statement) conn.createStatement();
+			rs = stmt.executeQuery(query);
 			while (rs.next()) {
 				int companyId = rs.getInt("id");
 				String companyName = rs.getString("name");
 				foundNames.put(companyId, companyName);
 			}
 		} catch (SQLException e) {
-			logger.error("Erreur SQL dans la requête findAllInRange", e);
+			logger.error("Erreur SQL dans la requête findAllNames", e);
+		} catch (DbSessionException e) {
+			logger.error("Erreur de session à la base de données", e);
+		}finally{
+			try {
+				stmt.close();
+				rs.close();
+				DbSession.closeSession();
+			} catch (DbSessionException e) {
+				logger.error("Erreur de session à la base de données", e);
+			} catch (SQLException e) {
+				logger.error("Erreur SQL lors de la fermeture", e);
+			}
 		}
 		
 		return foundNames;	

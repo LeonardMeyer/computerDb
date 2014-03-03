@@ -1,5 +1,6 @@
 package com.excilys.computerdb.business.dao;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -44,7 +45,13 @@ public class ComputerDao extends Dao<Computer> {
 	public Computer find(long id) {
 		Computer comp = null;
 		String query = "SELECT * FROM computer LEFT JOIN company ON (company.id = computer.company_id) WHERE computer.id = ?";
-		try(PreparedStatement stmt = (PreparedStatement) conn.prepareStatement(query)) {
+		PreparedStatement stmt = null;
+		try{
+			if(!DbSession.isSessionOpened()) {  
+				DbSession.openSession(false);
+			}  
+			Connection conn = DbSession.currentConnection();
+			stmt = (PreparedStatement) conn.prepareStatement(query);
 			stmt.setLong(1, id);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
@@ -67,6 +74,17 @@ public class ComputerDao extends Dao<Computer> {
 				}
 		} catch (SQLException e) {
 			logger.error("Erreur SQL dans la requête find Computer", e);
+		}catch (DbSessionException e) {
+			logger.error("Erreur de session sur la base de données", e);
+		}finally{
+			try {
+				stmt.close();
+				DbSession.closeSession();
+			} catch (DbSessionException e) {
+				logger.error("Erreur de session sur la base de données", e);
+			} catch (SQLException e) {
+				logger.error("Erreur SQL lors de la fermeture", e);
+			}
 		}
 		return comp;
 	}
@@ -82,7 +100,13 @@ public class ComputerDao extends Dao<Computer> {
 		String query = "INSERT INTO computer (id, name, introduced, discontinued, company_id)  VALUES(?, ?, ?, ?, ?) "
 				+ "ON DUPLICATE KEY UPDATE name = ?, introduced = ?, discontinued = ?, company_id = ?";
 		boolean success = false;
-		try(PreparedStatement stmt = (PreparedStatement) conn.prepareStatement(query)) {
+		PreparedStatement stmt = null;
+		try{
+			if(!DbSession.isSessionOpened()) {  
+				DbSession.openSession(false);
+			}  
+			Connection conn = DbSession.currentConnection();
+			stmt = (PreparedStatement) conn.prepareStatement(query);
 			stmt.setInt(1, obj.getComputerId());
 			stmt.setString(2, obj.getName());
 			stmt.setTimestamp(3, new Timestamp(obj.getIntroduced().toDateTimeAtStartOfDay().getMillis()));
@@ -108,7 +132,17 @@ public class ComputerDao extends Dao<Computer> {
 			}
 		} catch (SQLException e) {
 			logger.error("Erreur SQL dans la requête create Computer", e);
-			return false;
+		}catch (DbSessionException e) {
+			logger.error("Erreur de session sur la base de données", e);
+		}finally{
+			try {
+				stmt.close();
+				DbSession.closeSession();
+			} catch (DbSessionException e) {
+				logger.error("Erreur de session sur la base de données", e);
+			} catch (SQLException e) {
+				logger.error("Erreur SQL lors de la fermeture", e);
+			}
 		}
 		
 		return success;
@@ -118,7 +152,13 @@ public class ComputerDao extends Dao<Computer> {
 	public boolean delete(int id) {
 		String query = "DELETE FROM computer WHERE id = ?";
 		boolean success = false;
-		try(PreparedStatement stmt = (PreparedStatement) conn.prepareStatement(query)) {
+		PreparedStatement stmt = null;
+		try{
+			if(!DbSession.isSessionOpened()) {  
+				DbSession.openSession(false);
+			}  
+			Connection conn = DbSession.currentConnection();
+			stmt = (PreparedStatement) conn.prepareStatement(query);
 			stmt.setInt(1, id);
 			int rowsDeleted = stmt.executeUpdate();
 			if (rowsDeleted > 0) {
@@ -126,6 +166,17 @@ public class ComputerDao extends Dao<Computer> {
 			}
 		} catch (SQLException e) {
 			logger.error("Erreur SQL dans la requête delete Computer", e);
+		} catch (DbSessionException e) {
+			logger.error("Erreur de session sur la base de données", e);
+		}finally{
+			try {
+				stmt.close();
+				DbSession.closeSession();
+			} catch (DbSessionException e) {
+				logger.error("Erreur de session sur la base de données", e);
+			} catch (SQLException e) {
+				logger.error("Erreur SQL lors de la fermeture", e);
+			}
 		}
 		
 		return success;
@@ -137,10 +188,17 @@ public class ComputerDao extends Dao<Computer> {
 				+ "FROM computer LEFT JOIN company ON (company.id = computer.company_id) "
 				+ "ORDER BY computer.name "
 				+ "LIMIT ?,?";
-		try(PreparedStatement stmt = (PreparedStatement) conn.prepareStatement(query)) {
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try{
+			if(!DbSession.isSessionOpened()) {  
+				DbSession.openSession(false);
+			}  
+			Connection conn = DbSession.currentConnection();
+			stmt = (PreparedStatement) conn.prepareStatement(query);
 			stmt.setInt(1, firstBound);
 			stmt.setInt(2, secondBound);
-			ResultSet rs = stmt.executeQuery();
+			rs = stmt.executeQuery();
 			while (rs.next()) {
 				  int id = rs.getInt("computer.id");
 				  String name = rs.getString("computer.name");
@@ -163,6 +221,18 @@ public class ComputerDao extends Dao<Computer> {
 				}
 		} catch (SQLException e) {
 			logger.error("Erreur SQL dans la requête findAllInRange", e);
+		} catch (DbSessionException e) {
+			logger.error("Erreur de session sur la base de données", e);
+		}finally{
+			try {
+				stmt.close();
+				rs.close();
+				DbSession.closeSession();
+			} catch (DbSessionException e) {
+				logger.error("Erreur de session sur la base de données", e);
+			} catch (SQLException e) {
+				logger.error("Erreur SQL lors de la fermeture", e);
+			}
 		}
 		
 		return foundComputers;
@@ -174,9 +244,16 @@ public class ComputerDao extends Dao<Computer> {
 				+ "FROM computer LEFT JOIN company ON (company.id = computer.company_id) "
 				+ "WHERE computer.name LIKE ?"
 				+ "ORDER BY computer.name";
-		try(PreparedStatement stmt = (PreparedStatement) conn.prepareStatement(query)) {
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try{
+			if(!DbSession.isSessionOpened()) {  
+				DbSession.openSession(false);
+			}  
+			Connection conn = DbSession.currentConnection();
+			stmt = (PreparedStatement) conn.prepareStatement(query);
 			stmt.setString(1, "%" + toSearch + "%");
-			ResultSet rs = stmt.executeQuery();
+			rs = stmt.executeQuery();
 			while (rs.next()) {
 				  int id = rs.getInt("computer.id");
 				  String name = rs.getString("computer.name");
@@ -199,6 +276,18 @@ public class ComputerDao extends Dao<Computer> {
 				}
 		} catch (SQLException e) {
 			logger.error("Erreur SQL dans la requête filterByName", e);
+		} catch (DbSessionException e) {
+			logger.error("Erreur de session sur la base de données", e);
+		}finally{
+			try {
+				stmt.close();
+				rs.close();
+				DbSession.closeSession();
+			} catch (DbSessionException e) {
+				logger.error("Erreur de session sur la base de données", e);
+			} catch (SQLException e) {
+				logger.error("Erreur SQL lors de la fermeture", e);
+			}
 		}
 		
 		return foundComputers;
@@ -206,14 +295,31 @@ public class ComputerDao extends Dao<Computer> {
 	
 	public int count() {
 		String query = "SELECT COUNT(id) FROM computer";
+		Statement stmt = null;
 		int count = 0;
-		try(Statement stmt = (Statement) conn.createStatement()) {
+		try {
+			if(!DbSession.isSessionOpened()) {  
+				DbSession.openSession(false);
+			}  
+			Connection conn = DbSession.currentConnection();
+			stmt = (Statement) conn.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
 				count = rs.getInt(1);
 			}
 		} catch (SQLException e) {
 			logger.error("Erreur SQL dans la requête Computer count", e);
+		} catch (DbSessionException e) {
+			logger.error("Erreur de session à la base de données", e);
+		}finally{
+			try {
+				stmt.close();
+				DbSession.closeSession();
+			} catch (SQLException e) {
+				logger.error("Erreur de fermeture de statement", e);
+			} catch (DbSessionException e) {
+				logger.error("Erreur de session à la base de données", e);
+			}
 		}
 		
 		return count;

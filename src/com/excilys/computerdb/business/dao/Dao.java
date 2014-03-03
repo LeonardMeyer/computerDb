@@ -4,11 +4,9 @@ import java.sql.Connection;
 import java.util.List;
 
 public abstract class Dao<T> {
-
-	protected Connection conn = ConnectionFactory.INSTANCE.getConnection();
 	
 	/**
-	 * Permet de récupérer un objet via son ID
+	 * Permet de récupérer ou update un objet via son ID
 	 * @param id
 	 * @return
 	 */
