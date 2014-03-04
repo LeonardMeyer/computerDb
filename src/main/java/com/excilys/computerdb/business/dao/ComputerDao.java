@@ -184,6 +184,7 @@ public class ComputerDao extends Dao<Computer> {
 	}
 	
 	public List<Computer> findAllInRange(int firstBound, int secondBound) {
+		//Penser à String.format pour ASC ou DESC
 		List<Computer> foundComputers = new ArrayList<Computer>();
 		String query = "SELECT computer.id, computer.name, introduced, discontinued, company_id, company.name "
 				+ "FROM computer LEFT JOIN company ON (company.id = computer.company_id) "
@@ -240,6 +241,7 @@ public class ComputerDao extends Dao<Computer> {
 	}
 	
 	public List<Computer> filterByName(String toSearch) {
+
 		List<Computer> foundComputers = new ArrayList<Computer>();
 		String query = "SELECT computer.id, computer.name, introduced, discontinued, company_id, company.name "
 				+ "FROM computer LEFT JOIN company ON (company.id = computer.company_id) "

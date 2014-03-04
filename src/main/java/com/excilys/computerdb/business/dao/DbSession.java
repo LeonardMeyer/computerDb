@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DbSession {
+public final class DbSession {
 		
 		private Logger logger = LoggerFactory.getLogger(DbSession.class);
 		private static final ThreadLocal<Connection> session = new ThreadLocal<Connection>();  
@@ -38,7 +38,7 @@ public class DbSession {
 	        session.set(null);  
 	    }  
 	  
-	    public static void openSession(boolean isBeginTransaction) throws DbSessionException {  
+	    public static void openSession(final boolean isBeginTransaction) throws DbSessionException {  
 	        Connection conn = session.get();  
 	        if (conn != null) {  
 	            throw new DbSessionException("La session est déjà ouverte");  

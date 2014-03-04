@@ -37,7 +37,7 @@ public class AddComputer extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected final void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 		if (request.getParameter("computerId") != null) {
 			int computerId = Integer.parseInt(request.getParameter("computerId"));
 			if (computerId > 0) {
@@ -55,7 +55,7 @@ public class AddComputer extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected final void doPost(final HttpServletRequest request,  HttpServletResponse response) throws ServletException, IOException {
 		String computerName = request.getParameter("name");
 		String introducedDate = request.getParameter("introducedDate");
 		String discontinuedDate = request.getParameter("discontinuedDate");

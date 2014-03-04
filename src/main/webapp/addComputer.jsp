@@ -4,7 +4,7 @@
 
 	<h1>Add Computer</h1>
 	
-	<form action="/computer-database/AddComputer" method="POST">
+	<form action="/computerDb/AddComputer" method="POST">
 		<fieldset>
 			<input type="hidden" name="computerId" value="${computerToEdit.computerId}" >
 			<div class="clearfix">
@@ -49,9 +49,9 @@
 			    <input type="submit" value="Update"  class="btn primary">
 			  </c:otherwise>
 			</c:choose>
-			or <a href="/computer-database/" class="btn">Cancel</a> 
+			or <a href="/computerDb/" class="btn">Cancel</a> 
 			<c:if test="${computerToEdit != null}">or
-				<a href="/computer-database/DeleteComputer?computerId=${computerToEdit.computerId}" class="btn danger">Delete</a>
+				<a href="/computerDb/DeleteComputer?computerId=${computerToEdit.computerId}" class="btn danger">Delete</a>
 			</c:if>
 		</div>
 	</form>

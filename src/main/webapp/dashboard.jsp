@@ -4,14 +4,14 @@
 <section id="main">
 	<h1 id="homeTitle">${applicationScope.totalComputers}</h1>
 	<div id="actions">
-		<form action="/computer-database/SearchComputer" method="GET">
+		<form action="/computerDb/SearchComputer" method="GET">
 			<input type="search" id="searchbox" name="search"
 				value="" placeholder="Search name">
 			<input type="submit" id="searchsubmit"
 				value="Filter by name"
 				class="btn primary">
 		</form>
-		<a class="btn success" id="add" href="/computer-database/AddComputer">Add Computer</a>
+		<a class="btn success" id="add" href="/computerDb/AddComputer">Add Computer</a>
 	</div>
 	<c:if test="${success == false}">
 		<div class="alert-message error">Ajout échoué</div>
@@ -32,7 +32,7 @@
 		<tbody>
 			<c:forEach items="${computers}" var="computer" varStatus="status"> 
 			<tr>
-			    <td><a href="/computer-database/AddComputer?computerId=<c:out value='${computer.computerId}' />">${computer.name}</a></td>  
+			    <td><a href="/computerDb/AddComputer?computerId=<c:out value='${computer.computerId}' />">${computer.name}</a></td>  
 			    <td>${computer.introduced}</td> 
 			    <td>${computer.discontinued}</td> 
 			    <td>${computer.company.name}</td> 

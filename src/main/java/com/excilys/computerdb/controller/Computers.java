@@ -12,18 +12,19 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.computerdb.business.domain.Computer;
 import com.excilys.computerdb.business.services.ComputerService;
+import com.excilys.computerdb.business.services.ServiceProvider;
 
 /**
- * Servlet implementation class DeleteComputer
+ * Servlet implementation class DisplayComputers
  */
-@WebServlet("/DeleteComputer")
-public class DeleteComputer extends HttpServlet {
+@WebServlet("/Computers")
+public class Computers extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DeleteComputer() {
+    public Computers() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,25 +33,27 @@ public class DeleteComputer extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if (request.getParameter("computerId") != null) {
-			int computerId = Integer.parseInt(request.getParameter("computerId"));
-			if (computerId > 0) {
-				boolean success = ComputerService.getInstance().delete(computerId);
-			}
+		int firstBound;
+		int secondBound;
+		
+		if (request.getParameter("firstBound") == null || request.getParameter("secondBound") == null) {
+			firstBound = 0;
+			secondBound = 20;
+		}else{
+			firstBound = Integer.parseInt(request.getParameter("firstBound"));
+			secondBound = Integer.parseInt(request.getParameter("secondBound"));
 		}
-
-		List<Computer> computers = ComputerService.getInstance().findAllInRange(0, 20);
+		if(firstBound <= 0 || secondBound <= 0){
+			firstBound = 0;
+			secondBound = 20;
+		}
+		
+		List<Computer> computers = ComputerService.getInstance().findAllInRange(firstBound, secondBound);
 		request.setAttribute("computers", computers);
-		getServletContext().setAttribute("totalComputers", ComputerService.getInstance().count());
+		int totalComputers = ComputerService.getInstance().count();
+		getServletContext().setAttribute("totalComputers", totalComputers);
 		RequestDispatcher rd = getServletContext().getRequestDispatcher("/dashboard.jsp");
 		rd.forward(request, response);
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 	}
 
 }
