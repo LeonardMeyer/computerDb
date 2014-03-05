@@ -1,54 +1,17 @@
 package com.excilys.computerdb.business.services;
 
 import java.util.List;
-import java.util.Map;
 
-import com.excilys.computerdb.business.dao.DaoFactory;
+import org.springframework.dao.DataAccessException;
+
 import com.excilys.computerdb.business.domain.Company;
 
-public class CompanyService implements ServiceProvider<Company> {
+public interface CompanyService {
 
-	private static volatile CompanyService instance = null;
-
-	private CompanyService() {
-	}
-
-	public static CompanyService getInstance() {
-		if (instance == null) {
-			synchronized (CompanyService.class) {
-				// Double check
-				if (instance == null) {
-					instance = new CompanyService();
-				}
-			}
-		}
-		return instance;
-	}
-	
-	@Override
-	public Company find(long id) {
-		Company foundCompany = DaoFactory.getCompanyDao().find(id);
-		return foundCompany;
-	}
-
-	@Override
-	public List<Company> findAll() {
-		return DaoFactory.getCompanyDao().findAll();
-	}
-
-	@Override
-	public boolean create(Company obj) {
-		boolean success = DaoFactory.getCompanyDao().create(obj);
-		return success;
-	}
-
-	@Override
-	public boolean delete(int id) {
-		return DaoFactory.getCompanyDao().delete(id);
-	}
-	
-	public Map<Integer, String> findAllCompanyNames() {
-		return DaoFactory.getCompanyDao().findAllNames();	
-	}
-
+	/**
+	 * Retrieve all <code>Company</code> names from the data store.
+	 * 
+	 * @return a <code>Collection</code> of <code>Company</code> names
+	 */
+	List<Company> findAllNames() throws DataAccessException;
 }

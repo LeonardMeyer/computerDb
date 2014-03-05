@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.springframework.stereotype.Component;
 
 
 
@@ -11,6 +12,7 @@ import org.joda.time.LocalDate;
  * @author Leonard
  *
  */
+@Component
 public class Computer implements Serializable {
 	
 	private int computerId;

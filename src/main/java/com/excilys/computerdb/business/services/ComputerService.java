@@ -2,60 +2,68 @@ package com.excilys.computerdb.business.services;
 
 import java.util.List;
 
-import com.excilys.computerdb.business.dao.DaoFactory;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataRetrievalFailureException;
+
 import com.excilys.computerdb.business.domain.Computer;
 
-public class ComputerService implements ServiceProvider<Computer> {
+public interface ComputerService{
 
-	private static volatile ComputerService instance = null;
+	/**
+	 * Retrieve a <code>Computer</code> from the data store by id.
+	 * 
+	 * @param id
+	 *            the id to search for
+	 * @return the <code>Computer</code> if found
+	 * @throws org.springframework.dao.DataRetrievalFailureException
+	 *             if not found
+	 */
+	Computer findById(int id) throws DataRetrievalFailureException;
 
-	private ComputerService() {
-	}
+	/**
+	 * Retrieve all <code>Computer</code> from the data store.
+	 * 
+	 * @param fromBound
+	 *            Index dé départ de la récupération
+	 * @param maxResult
+	 *            Le nombre de lignes à retourner depuis fromBound
+	 * 
+	 * @return a <code>Collection</code> of <code>Computer</code>
+	 */
+	List<Computer> findByRange(int fromBound, int maxResult)
+			throws DataRetrievalFailureException;
 
-	public static ComputerService getInstance() {
-		if (instance == null) {
-			synchronized (ComputerService.class) {
-				// Double check
-				if (instance == null) {
-					instance = new ComputerService();
-				}
-			}
-		}
-		return instance;
-	}
-	
-	@Override
-	public Computer find(long id) {
-		Computer foundComputer = DaoFactory.getComputerDao().find(id);
-		return foundComputer;
-	}
+	/**
+	 * Retrieve <code>Computer</code>s from the data store given a specific
+	 * string.
+	 * 
+	 * @return a <code>Collection</code> of <code>Computer</code>s
+	 */
+	List<Computer> findByName(String name) throws DataRetrievalFailureException;
 
-	@Override
-	public List<Computer> findAll() {
-		return DaoFactory.getComputerDao().findAll();
-	}
+	/**
+	 * Save a <code>Company</code> to the data store, either inserting or
+	 * updating it.
+	 * 
+	 * @param computer
+	 *            the <code>Computer</code> to save
+	 * @see BaseEntity#isNew
+	 */
+	void save(Computer computer) throws DataAccessException;
 
-	@Override
-	public boolean create(Computer obj) {
-		boolean success = DaoFactory.getComputerDao().create(obj);
-		return success;
-	}
+	/**
+	 * Delete a <code>Computer</code> from the data store it.
+	 * 
+	 * @param computer
+	 *            the <code>Computer</code> to save
+	 */
+	void delete(Computer computer) throws DataAccessException;
 
-	@Override
-	public boolean delete(int id) {
-		return DaoFactory.getComputerDao().delete(id);
-	}
-	
-	public List<Computer> findAllInRange(int firstBound, int secondBound) {
-		return DaoFactory.getComputerDao().findAllInRange(firstBound, secondBound);
-	}
-	
-	public List<Computer> filterByName(String toSearch) {
-		return DaoFactory.getComputerDao().filterByName(toSearch);
-	}
-	
-	public int count() {
-		return DaoFactory.getComputerDao().count();
-	}
+	/**
+	 * Count the number of <code>Computer</code>s of the data store.
+	 * 
+	 * @return a <code>int</code>
+	 */
+	int count() throws DataAccessException;
 
 }

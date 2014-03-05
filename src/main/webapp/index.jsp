@@ -1,3 +1,3 @@
 <%
-response.sendRedirect(request.getContextPath()+"/Computers");
+response.sendRedirect(request.getContextPath()+"/");
 %>
