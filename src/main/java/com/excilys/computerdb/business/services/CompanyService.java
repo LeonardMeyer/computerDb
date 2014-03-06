@@ -3,52 +3,50 @@ package com.excilys.computerdb.business.services;
 import java.util.List;
 import java.util.Map;
 
-import com.excilys.computerdb.business.dao.DaoFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.excilys.computerdb.business.dao.CompanyDao;
 import com.excilys.computerdb.business.domain.Company;
 
+@Service
 public class CompanyService implements ServiceProvider<Company> {
 
-	private static volatile CompanyService instance = null;
+	private CompanyDao companyDao;
 
-	private CompanyService() {
-	}
 
-	public static CompanyService getInstance() {
-		if (instance == null) {
-			synchronized (CompanyService.class) {
-				// Double check
-				if (instance == null) {
-					instance = new CompanyService();
-				}
-			}
-		}
-		return instance;
-	}
-	
 	@Override
 	public Company find(long id) {
-		Company foundCompany = DaoFactory.getCompanyDao().find(id);
+		Company foundCompany = companyDao.find(id);
 		return foundCompany;
 	}
 
 	@Override
 	public List<Company> findAll() {
-		return DaoFactory.getCompanyDao().findAll();
+		return companyDao.findAll();
 	}
 
 	@Override
 	public boolean create(Company obj) {
-		boolean success = DaoFactory.getCompanyDao().create(obj);
+		boolean success = companyDao.create(obj);
 		return success;
 	}
 
 	@Override
 	public boolean delete(int id) {
-		return DaoFactory.getCompanyDao().delete(id);
+		return companyDao.delete(id);
 	}
 	
 	public Map<Integer, String> findAllCompanyNames() {
-		return DaoFactory.getCompanyDao().findAllNames();	
+		return companyDao.findAllNames();	
 	}
 
+	public CompanyDao getCompanyDao() {
+		return companyDao;
+	}
+
+	@Autowired
+	public void setCompanyDao(CompanyDao companyDao) {
+		this.companyDao = companyDao;
+	}
 }

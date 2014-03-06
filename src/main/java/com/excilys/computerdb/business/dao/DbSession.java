@@ -5,20 +5,23 @@ import java.sql.SQLException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public final class DbSession {
 		
 		private Logger logger = LoggerFactory.getLogger(DbSession.class);
-		private static final ThreadLocal<Connection> session = new ThreadLocal<Connection>();  
-
-		private DbSession() {
-		}
+		private ThreadLocal<Connection> session = new ThreadLocal<Connection>();  
 		
-		public static boolean isSessionOpened() {  
-	        return session.get() != null;  
-	    }  
+		private ConnectionFactory connFactory;
+
+		public ConnectionFactory getConnFactory() {
+			return connFactory;
+		}
+
 	  
-	    public static Connection currentConnection() throws DbSessionException {  
+	    public Connection currentConnection() throws DbSessionException {  
 	        Connection conn = session.get();  
 	        if (conn == null) {  
 	            throw new DbSessionException("Echec lors de la récupération de la session");  
@@ -26,7 +29,7 @@ public final class DbSession {
 	        return conn;  
 	    }  
 	  
-	    public static void closeSession() throws DbSessionException{ 
+	    public void closeSession() throws DbSessionException{ 
 	    	Connection conn = null;
 	        try {
 	        	conn = currentConnection();
@@ -38,12 +41,12 @@ public final class DbSession {
 	        session.set(null);  
 	    }  
 	  
-	    public static void openSession(final boolean isBeginTransaction) throws DbSessionException {  
+	    public void openSession(final boolean isBeginTransaction) throws DbSessionException {  
 	        Connection conn = session.get();  
 	        if (conn != null) {  
 	            throw new DbSessionException("La session est déjà ouverte");  
 	        }  
-	        Connection newConn = ConnectionFactory.INSTANCE.getConnection();  
+	        Connection newConn = connFactory.getConnection();  
 	        try {
 	        	newConn.setAutoCommit(isBeginTransaction);
 			} catch (SQLException e) {
@@ -51,6 +54,15 @@ public final class DbSession {
 			}  
 	        conn = newConn;  
 	        session.set(conn);  
+	    }  
+	    
+	    @Autowired
+	    public void setConnFactory(ConnectionFactory connFactory) {
+			this.connFactory = connFactory;
+		}
+
+		public boolean isSessionOpened() {  
+	        return session.get() != null;  
 	    }  
 		
 

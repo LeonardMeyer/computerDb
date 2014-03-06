@@ -10,30 +10,17 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.computerdb.business.domain.Company;
 
+@Repository
 public class CompanyDao extends Dao<Company>{
 	
 	private Logger logger = LoggerFactory.getLogger(CompanyDao.class);
 	
-	private static volatile CompanyDao instance = null;
-
-	private CompanyDao() {
-		
-	}
-
-	public static CompanyDao getInstance() {
-		if (instance == null) {
-			synchronized (CompanyDao.class) {
-				// Double check
-				if (instance == null) {
-					instance = new CompanyDao();
-				}
-			}
-		}
-		return instance;
-	}
+	private DbSession dbSession;
 
 	@Override
 	public Company find(long id) {
@@ -65,10 +52,10 @@ public class CompanyDao extends Dao<Company>{
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {
-			if(!DbSession.isSessionOpened()) {  
-				DbSession.openSession(false);
+			if(!dbSession.isSessionOpened()) {  
+				dbSession.openSession(false);
 			}  
-			Connection conn = DbSession.currentConnection();
+			Connection conn = dbSession.currentConnection();
 			stmt = (Statement) conn.createStatement();
 			rs = stmt.executeQuery(query);
 			while (rs.next()) {
@@ -84,7 +71,7 @@ public class CompanyDao extends Dao<Company>{
 			try {
 				stmt.close();
 				rs.close();
-				DbSession.closeSession();
+				dbSession.closeSession();
 			} catch (DbSessionException e) {
 				logger.error("Erreur de session à la base de données", e);
 			} catch (SQLException e) {
@@ -93,6 +80,15 @@ public class CompanyDao extends Dao<Company>{
 		}
 		
 		return foundNames;	
+	}
+
+	public DbSession getDbSession() {
+		return dbSession;
+	}
+
+	@Autowired
+	public void setDbSession(DbSession dbSession) {
+		this.dbSession = dbSession;
 	}
 
 }

@@ -17,30 +17,19 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.computerdb.business.domain.Company;
 import com.excilys.computerdb.business.domain.Computer;
 
+@Repository
 public class ComputerDao extends Dao<Computer> {
 	
 	private Logger logger = LoggerFactory.getLogger(ComputerDao.class);
 	
-	private static volatile ComputerDao instance = null;
+	private DbSession dbSession;
 
-	private ComputerDao() {
-	}
-
-	public static ComputerDao getInstance() {
-		if (instance == null) {
-			synchronized (ComputerDao.class) {
-				// Double check
-				if (instance == null) {
-					instance = new ComputerDao();
-				}
-			}
-		}
-		return instance;
-	}
 	
 	@Override
 	public Computer find(long id) {
@@ -48,10 +37,10 @@ public class ComputerDao extends Dao<Computer> {
 		String query = "SELECT * FROM computer LEFT JOIN company ON (company.id = computer.company_id) WHERE computer.id = ?";
 		PreparedStatement stmt = null;
 		try{
-			if(!DbSession.isSessionOpened()) {  
-				DbSession.openSession(false);
+			if(!dbSession.isSessionOpened()) {  
+				dbSession.openSession(false);
 			}  
-			Connection conn = DbSession.currentConnection();
+			Connection conn = dbSession.currentConnection();
 			stmt = (PreparedStatement) conn.prepareStatement(query);
 			stmt.setLong(1, id);
 			ResultSet rs = stmt.executeQuery();
@@ -80,7 +69,7 @@ public class ComputerDao extends Dao<Computer> {
 		}finally{
 			try {
 				stmt.close();
-				DbSession.closeSession();
+				dbSession.closeSession();
 			} catch (DbSessionException e) {
 				logger.error("Erreur de session sur la base de données", e);
 			} catch (SQLException e) {
@@ -103,10 +92,10 @@ public class ComputerDao extends Dao<Computer> {
 		boolean success = false;
 		PreparedStatement stmt = null;
 		try{
-			if(!DbSession.isSessionOpened()) {  
-				DbSession.openSession(false);
+			if(!dbSession.isSessionOpened()) {  
+				dbSession.openSession(false);
 			}  
-			Connection conn = DbSession.currentConnection();
+			Connection conn = dbSession.currentConnection();
 			stmt = (PreparedStatement) conn.prepareStatement(query);
 			stmt.setInt(1, obj.getComputerId());
 			stmt.setString(2, obj.getName());
@@ -138,7 +127,7 @@ public class ComputerDao extends Dao<Computer> {
 		}finally{
 			try {
 				stmt.close();
-				DbSession.closeSession();
+				dbSession.closeSession();
 			} catch (DbSessionException e) {
 				logger.error("Erreur de session sur la base de données", e);
 			} catch (SQLException e) {
@@ -155,10 +144,10 @@ public class ComputerDao extends Dao<Computer> {
 		boolean success = false;
 		PreparedStatement stmt = null;
 		try{
-			if(!DbSession.isSessionOpened()) {  
-				DbSession.openSession(false);
+			if(!dbSession.isSessionOpened()) {  
+				dbSession.openSession(false);
 			}  
-			Connection conn = DbSession.currentConnection();
+			Connection conn = dbSession.currentConnection();
 			stmt = (PreparedStatement) conn.prepareStatement(query);
 			stmt.setInt(1, id);
 			int rowsDeleted = stmt.executeUpdate();
@@ -172,7 +161,7 @@ public class ComputerDao extends Dao<Computer> {
 		}finally{
 			try {
 				stmt.close();
-				DbSession.closeSession();
+				dbSession.closeSession();
 			} catch (DbSessionException e) {
 				logger.error("Erreur de session sur la base de données", e);
 			} catch (SQLException e) {
@@ -193,10 +182,10 @@ public class ComputerDao extends Dao<Computer> {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try{
-			if(!DbSession.isSessionOpened()) {  
-				DbSession.openSession(false);
+			if(!dbSession.isSessionOpened()) {  
+				dbSession.openSession(false);
 			}  
-			Connection conn = DbSession.currentConnection();
+			Connection conn = dbSession.currentConnection();
 			stmt = (PreparedStatement) conn.prepareStatement(query);
 			stmt.setInt(1, firstBound);
 			stmt.setInt(2, secondBound);
@@ -229,7 +218,7 @@ public class ComputerDao extends Dao<Computer> {
 			try {
 				stmt.close();
 				rs.close();
-				DbSession.closeSession();
+				dbSession.closeSession();
 			} catch (DbSessionException e) {
 				logger.error("Erreur de session sur la base de données", e);
 			} catch (SQLException e) {
@@ -250,10 +239,10 @@ public class ComputerDao extends Dao<Computer> {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try{
-			if(!DbSession.isSessionOpened()) {  
-				DbSession.openSession(false);
+			if(!dbSession.isSessionOpened()) {  
+				dbSession.openSession(false);
 			}  
-			Connection conn = DbSession.currentConnection();
+			Connection conn = dbSession.currentConnection();
 			stmt = (PreparedStatement) conn.prepareStatement(query);
 			stmt.setString(1, "%" + toSearch + "%");
 			rs = stmt.executeQuery();
@@ -285,7 +274,7 @@ public class ComputerDao extends Dao<Computer> {
 			try {
 				stmt.close();
 				rs.close();
-				DbSession.closeSession();
+				dbSession.closeSession();
 			} catch (DbSessionException e) {
 				logger.error("Erreur de session sur la base de données", e);
 			} catch (SQLException e) {
@@ -301,10 +290,10 @@ public class ComputerDao extends Dao<Computer> {
 		Statement stmt = null;
 		int count = 0;
 		try {
-			if(!DbSession.isSessionOpened()) {  
-				DbSession.openSession(false);
+			if(!dbSession.isSessionOpened()) {  
+				dbSession.openSession(false);
 			}  
-			Connection conn = DbSession.currentConnection();
+			Connection conn = dbSession.currentConnection();
 			stmt = (Statement) conn.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
@@ -317,7 +306,7 @@ public class ComputerDao extends Dao<Computer> {
 		}finally{
 			try {
 				stmt.close();
-				DbSession.closeSession();
+				dbSession.closeSession();
 			} catch (SQLException e) {
 				logger.error("Erreur de fermeture de statement", e);
 			} catch (DbSessionException e) {
@@ -326,6 +315,15 @@ public class ComputerDao extends Dao<Computer> {
 		}
 		
 		return count;
+	}
+
+	public DbSession getDbSession() {
+		return dbSession;
+	}
+
+	@Autowired
+	public void setDbSession(DbSession dbSession) {
+		this.dbSession = dbSession;
 	}
 	
 	
