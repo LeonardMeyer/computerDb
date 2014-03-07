@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.dao.DataAccessException;
 
+
 import com.excilys.computerdb.business.domain.Company;
+
 
 public interface CompanyRepository {
 
@@ -24,6 +26,6 @@ public interface CompanyRepository {
 	 * 
 	 * @return a <code>Collection</code> of <code>Company</code> names
 	 */
-	List<Company> findAllNames() throws DataAccessException;
+	List<Company> findAll() throws DataAccessException;
 
 }

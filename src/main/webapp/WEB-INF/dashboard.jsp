@@ -1,17 +1,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="/WEB-INF/PaginationTag.tld" prefix="paging" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <jsp:include page="include/header.jsp" />
 <section id="main">
-	<h1 id="homeTitle">${applicationScope.totalComputers}</h1>
+	<h1 id="homeTitle">${totalComputers}</h1>
 	<div id="actions">
-		<form action="/computerDb/SearchComputer" method="GET">
-			<input type="search" id="searchbox" name="search"
+		<form action="/computerDb/Computer/Search/" method="GET">
+			<input type="search" id="name" name="name"
 				value="" placeholder="Search name">
 			<input type="submit" id="searchsubmit"
 				value="Filter by name"
 				class="btn primary">
 		</form>
-		<a class="btn success" id="add" href="/computerDb/AddComputer">Add Computer</a>
+		<a class="btn success" id="add" href="<c:url value="/Computer/New"/>">Add Computer</a>
 	</div>
 	<c:if test="${success == false}">
 		<div class="alert-message error">Ajout échoué</div>
@@ -32,7 +33,7 @@
 		<tbody>
 			<c:forEach items="${computers}" var="computer" varStatus="status"> 
 			<tr>
-			    <td><a href="/computerDb/AddComputer?computerId=<c:out value='${computer.computerId}' />">${computer.name}</a></td>  
+			    <td><a href="/computerDb/Computer/<c:out value='${computer.computerId}' />/Display">${computer.name}</a></td>  
 			    <td>${computer.introduced}</td> 
 			    <td>${computer.discontinued}</td> 
 			    <td>${computer.company.name}</td> 
@@ -40,7 +41,6 @@
 			</c:forEach> 
 		</tbody>
 	</table>
-	<paging:display totalRecords="${totalComputers}" recordsPerPage="20"/>
 </section>
 
 <jsp:include page="include/footer.jsp" />

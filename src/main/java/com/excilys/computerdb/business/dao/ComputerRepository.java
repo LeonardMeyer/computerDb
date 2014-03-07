@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataRetrievalFailureException;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.computerdb.business.domain.Computer;
 
@@ -64,7 +65,7 @@ public interface ComputerRepository {
 	 * @param computer
 	 *            the <code>Computer</code> to save
 	 */
-	void delete(Computer computer) throws DataAccessException;
+	void delete(int id) throws DataAccessException;
 	
 	/**
 	 * Count the number of <code>Computer</code>s of the data store.

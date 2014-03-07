@@ -54,10 +54,10 @@ public interface ComputerService{
 	/**
 	 * Delete a <code>Computer</code> from the data store it.
 	 * 
-	 * @param computer
+	 * @param id
 	 *            the <code>Computer</code> to save
 	 */
-	void delete(Computer computer) throws DataAccessException;
+	void delete(int id) throws DataAccessException;
 
 	/**
 	 * Count the number of <code>Computer</code>s of the data store.

@@ -7,19 +7,21 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.computerdb.business.dao.CompanyRepository;
 import com.excilys.computerdb.business.domain.Company;
+import com.excilys.computerdb.business.domain.CompanyMapper;
 
-@Repository
+@Repository(value="JdbcCompanyRepository")
+@Profile(value="jdbc")
 public class JdbcCompanyRepository implements CompanyRepository{
 
 	private Logger logger = LoggerFactory.getLogger(JdbcCompanyRepository.class);
-	private NamedParameterJdbcTemplate jdbcTemplate;
+	private NamedParameterJdbcTemplate namedJdbcTemplate;
 
 	@Autowired
 	public JdbcCompanyRepository(DataSource dataSource) {
@@ -28,18 +30,17 @@ public class JdbcCompanyRepository implements CompanyRepository{
 	}
 	
 	@Override
-	@Transactional(readOnly=true)
-	public List<Company> findAllNames() throws DataAccessException {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Company> findAll() throws DataAccessException {
+		String sql = "SELECT * FROM company ORDER BY company.name";
+		return namedJdbcTemplate.query(sql, new CompanyMapper());
 	}
 
 	public NamedParameterJdbcTemplate getJdbcTemplate() {
-		return jdbcTemplate;
+		return namedJdbcTemplate;
 	}
 
 	public void setJdbcTemplate(NamedParameterJdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
+		this.namedJdbcTemplate = jdbcTemplate;
 	}
 
 
