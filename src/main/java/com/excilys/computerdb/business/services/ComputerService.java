@@ -6,6 +6,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataRetrievalFailureException;
 
 import com.excilys.computerdb.business.domain.Computer;
+import com.excilys.computerdb.business.domain.ComputerDto;
 
 public interface ComputerService{
 
@@ -18,7 +19,7 @@ public interface ComputerService{
 	 * @throws org.springframework.dao.DataRetrievalFailureException
 	 *             if not found
 	 */
-	Computer findById(int id) throws DataRetrievalFailureException;
+	ComputerDto findById(int id) throws DataRetrievalFailureException;
 
 	/**
 	 * Retrieve all <code>Computer</code> from the data store.
@@ -30,7 +31,7 @@ public interface ComputerService{
 	 * 
 	 * @return a <code>Collection</code> of <code>Computer</code>
 	 */
-	List<Computer> findByRange(int fromBound, int maxResult)
+	List<ComputerDto> findByRange(int fromBound, int maxResult)
 			throws DataRetrievalFailureException;
 
 	/**
@@ -39,7 +40,7 @@ public interface ComputerService{
 	 * 
 	 * @return a <code>Collection</code> of <code>Computer</code>s
 	 */
-	List<Computer> findByName(String name) throws DataRetrievalFailureException;
+	List<ComputerDto> findByName(String name) throws DataRetrievalFailureException;
 
 	/**
 	 * Save a <code>Company</code> to the data store, either inserting or
@@ -49,7 +50,7 @@ public interface ComputerService{
 	 *            the <code>Computer</code> to save
 	 * @see BaseEntity#isNew
 	 */
-	void save(Computer computer) throws DataAccessException;
+	void save(ComputerDto computer) throws DataAccessException;
 
 	/**
 	 * Delete a <code>Computer</code> from the data store it.

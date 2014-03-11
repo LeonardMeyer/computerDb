@@ -1,44 +1,42 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="/WEB-INF/PaginationTag.tld" prefix="paging" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="/WEB-INF/PaginationTag.tld" prefix="paging"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="i18l"%>
+<%@ taglib prefix="spring"
+	uri="http://www.springframework.org/tags/form"%>
 <jsp:include page="include/header.jsp" />
 <section id="main">
 	<h1 id="homeTitle">${totalComputers}</h1>
 	<div id="actions">
-		<form action="/computerDb/Computer/Search/" method="GET">
-			<input type="search" id="name" name="name"
-				value="" placeholder="Search name">
-			<input type="submit" id="searchsubmit"
-				value="Filter by name"
-				class="btn primary">
-		</form>
-		<a class="btn success" id="add" href="<c:url value="/Computer/New"/>">Add Computer</a>
+		<spring:form action="/computerDb/Computer/Search" method="GET">
+			<input type="search" id="name" name="name" value=""
+				placeholder="<i18l:message code="filterBox"/>" />
+			<input type="submit" value="<i18l:message code="filterButton"/>" class="btn primary" />
+		</spring:form>
+		<a class="btn success" id="add" href="<c:url value="/Computer/New"/>"><i18l:message code="addCompHeader"/></a>
 	</div>
-	<c:if test="${success == false}">
-		<div class="alert-message error">Ajout échoué</div>
-	</c:if>
 	<table class="computers zebra-striped">
 		<thead>
 			<tr>
 				<!-- Variable declarations for passing labels as parameters -->
 				<!-- Table header for Computer Name -->
-				<th>Computer Name</th>
-				<th>Introduced Date</th>
+				<th><i18l:message code="nameHeader"/></th>
+				<th><i18l:message code="introHeader"/></th>
 				<!-- Table header for Discontinued Date -->
-				<th>Discontinued Date</th>
+				<th><i18l:message code="discHeader"/></th>
 				<!-- Table header for Company -->
-				<th>Company</th>
+				<th><i18l:message code="companyHeader"/></th>
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach items="${computers}" var="computer" varStatus="status"> 
-			<tr>
-			    <td><a href="/computerDb/Computer/<c:out value='${computer.computerId}' />/Display">${computer.name}</a></td>  
-			    <td>${computer.introduced}</td> 
-			    <td>${computer.discontinued}</td> 
-			    <td>${computer.company.name}</td> 
-			 </tr>
-			</c:forEach> 
+			<c:forEach items="${computers}" var="computer" varStatus="status">
+				<tr>
+					<td><a
+						href="/computerDb/Computer/<c:out value='${computer.computerId}' />/Display">${computer.name}</a></td>
+					<td>${computer.introduced}</td>
+					<td>${computer.discontinued}</td>
+					<td>${computer.companyName}</td>
+				</tr>
+			</c:forEach>
 		</tbody>
 	</table>
 </section>

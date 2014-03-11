@@ -42,7 +42,7 @@ public class JdbcComputerRepository implements ComputerRepository {
 	@Override
 	public Computer findById(int id) throws DataRetrievalFailureException {
 		String sql = "SELECT * FROM computer LEFT JOIN company ON (company.id = computer.company_id) WHERE computer.id = :id";
-		SqlParameterSource namedParameters = new MapSqlParameterSource("id", Integer.valueOf(id)); 
+		SqlParameterSource namedParameters = new MapSqlParameterSource("id", id); 
 		return (Computer) namedJdbcTemplate.queryForObject(sql, namedParameters, new ComputerMapper());
 	}
 
@@ -63,9 +63,9 @@ public class JdbcComputerRepository implements ComputerRepository {
 			throws DataRetrievalFailureException {
 		String sql = "SELECT computer.id, computer.name, introduced, discontinued, company_id, company.name "
 				+ "FROM computer LEFT JOIN company ON (company.id = computer.company_id) "
-				+ "WHERE computer.name LIKE :name" + "ORDER BY computer.name";
+				+ "WHERE computer.name LIKE :name" + " ORDER BY computer.name";
 		Map<String, Object> argMap = new HashMap<String, Object>();
-		argMap.put("name", name);
+		argMap.put("name", "%"+name+"%");
 		return namedJdbcTemplate.query(sql, argMap, new ComputerMapper());
 	}
 
@@ -90,8 +90,8 @@ public class JdbcComputerRepository implements ComputerRepository {
 
 	@Override
 	public void delete(int id) throws DataAccessException {
-		String sql = "DELETE FROM computer WHERE id = :id";  
-		SqlParameterSource namedParameters = new MapSqlParameterSource("id", id);  
+		String sql = "DELETE FROM computer WHERE id = :toDel";  
+		SqlParameterSource namedParameters = new MapSqlParameterSource("toDel", id);  
 		namedJdbcTemplate.update(sql, namedParameters);  
 	}
 

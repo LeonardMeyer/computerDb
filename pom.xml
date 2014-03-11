@@ -142,6 +142,19 @@
 		</dependency>
 	</dependencies>
 
+	<build>
+		<finalName>computerDatabase</finalName>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>3.1</source>
+					<target>3.1</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 	<reporting>
 		<plugins>
 			<plugin>

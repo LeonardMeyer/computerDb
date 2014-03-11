@@ -76,3 +76,36 @@ table.computers .header a {
 .paginatorList li { float: left; padding: 2px 4px; font-size: 1.2em; }
 li.paginatorCurr { font-weight: bold; font-size: 1.5em; margin-top: -2px; }
 li.paginatorLast { float: none; }
+
+.isa_info, .isa_success, .isa_warning, .isa_error {
+    border: 1px solid;
+    margin: 10px 0px;
+	-moz-border-radius:.5em;
+	-webkit-border-radius:.5em;
+	border-radius:.5em;
+	padding: 10px 10px 10px 10px;
+	background-repeat: no-repeat;
+	background-position: 10px center;
+	border-radius: 0.5em;
+ 
+}
+.isa_info {
+    color: #00529B;
+    background-color: #BDE5F8;
+
+}
+.isa_success {
+    color: #4F8A10;
+    background-color: #DFF2BF;
+
+}
+.isa_warning {
+    color: #9F6000;
+    background-color: #FEEFB3;
+
+}
+.isa_error {
+    color: #D8000C;
+    background-color: #FFBABA;
+ 
+}

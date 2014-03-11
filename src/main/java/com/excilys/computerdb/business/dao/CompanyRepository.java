@@ -27,5 +27,12 @@ public interface CompanyRepository {
 	 * @return a <code>Collection</code> of <code>Company</code> names
 	 */
 	List<Company> findAll() throws DataAccessException;
+	
+	/**
+	 * Retrieve a <code>Company</code> by id
+	 * 
+	 * @return a <code>Company</code>
+	 */
+	Company findById(int id) throws DataAccessException;
 
 }

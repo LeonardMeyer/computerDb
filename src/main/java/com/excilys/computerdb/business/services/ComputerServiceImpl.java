@@ -1,5 +1,6 @@
 package com.excilys.computerdb.business.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,37 +10,50 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.computerdb.business.dao.ComputerRepository;
+import com.excilys.computerdb.business.dao.DtoMapper;
 import com.excilys.computerdb.business.domain.Computer;
+import com.excilys.computerdb.business.domain.ComputerDto;
 
 @Service
 public class ComputerServiceImpl implements ComputerService{
 
 	private ComputerRepository computerRepo;
+	private DtoMapper dtoMapper;
 	
 	@Override
 	@Transactional(readOnly=true)
-	public Computer findById(int id) throws DataRetrievalFailureException {
-		return computerRepo.findById(id);
+	public ComputerDto findById(int id) throws DataRetrievalFailureException {
+		return dtoMapper.dtoFromComputer(computerRepo.findById(id));
 	}
 
 	@Override
 	@Transactional(readOnly=true)
-	public List<Computer> findByRange(int fromBound, int maxResult)
+	public List<ComputerDto> findByRange(int fromBound, int maxResult)
 			throws DataRetrievalFailureException {
-		return computerRepo.findByRange(fromBound, maxResult);
+		List<Computer> computers = computerRepo.findByRange(fromBound, maxResult);
+		List<ComputerDto> dtos = new ArrayList<>();
+		for (Computer computer : computers) {
+			dtos.add(dtoMapper.dtoFromComputer(computer));
+		}
+		return dtos;
 	}
 
 	@Override
 	@Transactional(readOnly=true)
-	public List<Computer> findByName(String name)
+	public List<ComputerDto> findByName(String name)
 			throws DataRetrievalFailureException {
-		return computerRepo.findByName(name);
+		List<Computer> computers = computerRepo.findByName(name);
+		List<ComputerDto> dtos = new ArrayList<>();
+		for (Computer computer : computers) {
+			dtos.add(dtoMapper.dtoFromComputer(computer));
+		}
+		return dtos;
 	}
 
 	@Override
 	@Transactional
-	public void save(Computer computer) throws DataAccessException {
-		computerRepo.save(computer);
+	public void save(ComputerDto dto) throws DataAccessException {
+		computerRepo.save(dtoMapper.computerFromDto(dto));
 	}
 
 	@Override
@@ -61,6 +75,15 @@ public class ComputerServiceImpl implements ComputerService{
 	@Autowired
 	public void setComputerRepo(ComputerRepository computerRepo) {
 		this.computerRepo = computerRepo;
+	}
+
+	public DtoMapper getDtoMapper() {
+		return dtoMapper;
+	}
+
+	@Autowired
+	public void setDtoMapper(DtoMapper dtoMapper) {
+		this.dtoMapper = dtoMapper;
 	}
 
 
