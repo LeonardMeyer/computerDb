@@ -5,8 +5,7 @@
 
 <section id="main">
 
-	<h1>Add Computer</h1>
-
+	<h1><i18l:message code="addCompHeader" /></h1>
 	<spring:form action="/computerDb/Computer/Save" method="POST" name="crudForm" id="crudForm" modelAttribute="computer">
 		<fieldset>
 			
@@ -43,7 +42,7 @@
 				<label for="company"><i18l:message code="companyHeader"/>:</label>
 				<div class="input">
 					<spring:select path="companyId" multiple="true">
-						<spring:option value="-1" label="<i18l:message code="comboBoxDefault" />" />
+						<spring:option value="-1" ><i18l:message code="comboBoxDefault" /></spring:option>
 						<spring:options items="${companies}" itemLabel="name" itemValue="companyId" />
 					</spring:select>
 				</div>
@@ -60,7 +59,7 @@
 			</c:choose>
 			or <a href="/computerDb/Computer/0/20" class="btn"><i18l:message code="cancelButton"/></a>
 			<c:if test="${editionMode == true}">or
-				<input type="button" class="btn danger" value="Delete" onclick="deleteEnabled()" />	
+				<input type="button" class="btn danger" value="<i18l:message code="deleteButton" />" onclick="deleteEnabled()" />	
 			</c:if>
 		</div>
 	</spring:form>

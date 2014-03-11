@@ -25,10 +25,10 @@ public class PaginationTag extends TagSupport {
 			nbOfPages = (int) Math.ceil((double)totalRecords/recordsPerPage);
 			for (int i = 1; i < nbOfPages+1; i++) {
 				if (i == 1) {
-					out.println("<li><a href='/computerDb/Computers?firstBound=0&secondBound="+recordsPerPage+"'>1</a></li>");
+					out.println("<li><a href='/computerDb/Computer/0/"+recordsPerPage+"'>1</a></li>");
 				}else {
-					out.println("<li><a href='/computerDb/Computers?firstBound="+previousBound+
-							"&secondBound="+recordsPerPage+"'>"+i+"</a></li>");
+					out.println("<li><a href='/computerDb/Computer/"+previousBound+
+							"/"+recordsPerPage+"'>"+i+"</a></li>");
 					previousBound += recordsPerPage;
 				}
 			}

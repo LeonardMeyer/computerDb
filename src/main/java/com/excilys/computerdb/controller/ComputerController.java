@@ -1,14 +1,7 @@
 package com.excilys.computerdb.controller;
 
-import java.beans.PropertyEditorSupport;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.beans.propertyeditors.PropertiesEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -20,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.excilys.computerdb.business.domain.Computer;
 import com.excilys.computerdb.business.domain.ComputerDto;
 import com.excilys.computerdb.business.services.CompanyService;
 import com.excilys.computerdb.business.services.ComputerService;
@@ -51,7 +42,7 @@ public class ComputerController {
 	// Affiche les ordis depuis un index avec tant de résultat
 	@RequestMapping(value = "/{fromBound}/{maxResult}", method = RequestMethod.GET)
 	public ModelAndView findByRange(@PathVariable String fromBound,
-			@PathVariable String maxResult) {
+			@PathVariable String maxResult){
 		int fromBound2 = Integer.parseInt(fromBound);
 		int maxResult2 = Integer.parseInt(maxResult);
 		ModelAndView mav = new ModelAndView();
@@ -64,11 +55,13 @@ public class ComputerController {
 
 	// Affiche les ordis depuis un index avec tant de résultats
 	@RequestMapping(value = "/Search", method = RequestMethod.GET)
-	public ModelAndView findByName(@RequestParam(value = "name", required = true) String name) {
+	public ModelAndView findByName(@RequestParam(value = "name", required = false) String name) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("dashboard");
-		mav.addObject("computers", computerService.findByName(name));
-		mav.addObject("totalComputers", computerService.count());
+		if (name != null) {
+			mav.addObject("computers", computerService.findByName(name));
+			mav.addObject("totalComputers", computerService.count());
+		}
 		return mav;
 	}
 
@@ -85,15 +78,23 @@ public class ComputerController {
 
 	// Edition d'un computer et redirection
 	@RequestMapping(value = "/Save", method = RequestMethod.POST)
-	public String save(@ModelAttribute("computer") ComputerDto computer, BindingResult result, SessionStatus status) {
+	public ModelAndView save(@ModelAttribute("computer") ComputerDto computer, BindingResult result, SessionStatus status) {
 		new ComputerValidator().validate(computer, result);
+		ModelAndView mav = new ModelAndView();
 		if (result.hasErrors()) {
-			return "addComputer";
+			mav.setViewName("addComputer");
+			mav.addObject("companies", companyService.findAll());
+			if (computer.getComputerId() > 0) {
+				mav.addObject("editionMode", true);	
+			}
+			return mav;
 		}else {
 			computerService.save(computer);
 		}
-		
-		return "redirect:/Computer/0/20";
+		mav.setViewName("dashboard");
+		mav.addObject("computers", computerService.findByRange(0, 20));
+		mav.addObject("totalComputers", computerService.count());
+		return mav;
 	}
 
 	// Supprime un computer depuis un id

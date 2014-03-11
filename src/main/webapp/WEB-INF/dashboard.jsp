@@ -30,8 +30,7 @@
 		<tbody>
 			<c:forEach items="${computers}" var="computer" varStatus="status">
 				<tr>
-					<td><a
-						href="/computerDb/Computer/<c:out value='${computer.computerId}' />/Display">${computer.name}</a></td>
+					<td><a href="/computerDb/Computer/<c:out value='${computer.computerId}' />/Display">${computer.name}</a></td>
 					<td>${computer.introduced}</td>
 					<td>${computer.discontinued}</td>
 					<td>${computer.companyName}</td>
@@ -39,6 +38,6 @@
 			</c:forEach>
 		</tbody>
 	</table>
+	<paging:display totalRecords="${totalComputers}" recordsPerPage="20"/>
 </section>
-
 <jsp:include page="include/footer.jsp" />

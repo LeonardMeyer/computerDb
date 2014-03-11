@@ -18,11 +18,11 @@
 			<taglib-location>/WEB-INF/PaginationTag.tld</taglib-location>
 		</taglib>
 	</jsp-config>
-	
+
 	<context-param>
-        <param-name>spring.profiles.active</param-name>
-        <param-value>jdbc</param-value>
-    </context-param> 
+		<param-name>spring.profiles.active</param-name>
+		<param-value>jdbc</param-value>
+	</context-param>
 
 	<servlet>
 		<servlet-name>applicationContext</servlet-name>
@@ -33,5 +33,6 @@
 		<servlet-name>applicationContext</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-	
+
+
 </web-app>
