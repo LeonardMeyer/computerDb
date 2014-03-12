@@ -22,5 +22,15 @@
 	      <required>true</required>
 	      <rtexprvalue>true</rtexprvalue>
 	  	</attribute>
+	  	<attribute>
+	      <name>order</name>
+	      <required>true</required>
+	      <rtexprvalue>true</rtexprvalue>
+	  	</attribute>
+	  	<attribute>
+	      <name>currentSearch</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	  	</attribute>
 	</tag>
 </taglib> 

@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.computerdb.business.dao.ComputerRepository;
 import com.excilys.computerdb.business.dao.DtoMapper;
+import com.excilys.computerdb.business.dao.SearchOrder;
 import com.excilys.computerdb.business.domain.Computer;
 import com.excilys.computerdb.business.domain.ComputerDto;
 
@@ -40,9 +41,9 @@ public class ComputerServiceImpl implements ComputerService{
 
 	@Override
 	@Transactional(readOnly=true)
-	public List<ComputerDto> findByName(String name)
+	public List<ComputerDto> search(String name, SearchOrder orderBy, int fromBound, int maxResult)
 			throws DataRetrievalFailureException {
-		List<Computer> computers = computerRepo.findByName(name);
+		List<Computer> computers = computerRepo.search(name, orderBy, fromBound, maxResult);
 		List<ComputerDto> dtos = new ArrayList<>();
 		for (Computer computer : computers) {
 			dtos.add(dtoMapper.dtoFromComputer(computer));

@@ -15,7 +15,7 @@
 <body>
 	<header class="topbar">
 		<h1 class="fill">
-			<a href="/computerDb/Computer/0/20"><i18l:message code="appHeader"/></a>
+			<a href="/computerDb/Computer/Search?fromBound=0&nbElem=20"><i18l:message code="appHeader"/></a>
 			<span style="float: right">
 		    	<a href="?lang=en"><i18l:message code="english"/></a>-<a href="?lang=fr"><i18l:message code="french"/></a>
 			</span>

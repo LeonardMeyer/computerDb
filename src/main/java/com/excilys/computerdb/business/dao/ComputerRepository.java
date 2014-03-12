@@ -46,7 +46,7 @@ public interface ComputerRepository {
 	 * 
 	 * @return a <code>Collection</code> of <code>Computer</code>s
 	 */
-	List<Computer> findByName(String name) throws DataRetrievalFailureException;
+	List<Computer> search(String name, SearchOrder orderBy, int fromBound, int maxResult) throws DataRetrievalFailureException;
 
 	/**
 	 * Save a <code>Company</code> to the data store, either inserting or updating

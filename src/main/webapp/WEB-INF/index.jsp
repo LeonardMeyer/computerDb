@@ -1,3 +1,3 @@
 <%
-response.sendRedirect(request.getContextPath()+"/Computer/0/20");
+response.sendRedirect(request.getContextPath()+"/Computer/Search?fromBound=0&nbElem=20");
 %>

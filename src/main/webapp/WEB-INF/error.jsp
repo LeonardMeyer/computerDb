@@ -135,6 +135,7 @@ p {
 <body>
 <p>lol c cassé<br/><span class="bigger flickering">Error</span></p>
 <p id="info"><c:out value="${exception}"></c:out></p>
+<p id="info"><c:out value="${trace}"></c:out></p>
 </body>
 </html>
 

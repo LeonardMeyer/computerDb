@@ -20,12 +20,14 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.computerdb.business.dao.ComputerRepository;
+import com.excilys.computerdb.business.dao.SearchOrder;
 import com.excilys.computerdb.business.domain.Computer;
 import com.excilys.computerdb.business.domain.ComputerMapper;
 
 @Repository(value="JdbcComputerRepository")
 @Profile(value="jdbc")
 public class JdbcComputerRepository implements ComputerRepository {
+	
 
 	private Logger logger = LoggerFactory
 			.getLogger(JdbcComputerRepository.class);
@@ -59,13 +61,23 @@ public class JdbcComputerRepository implements ComputerRepository {
 	}
 
 	@Override
-	public List<Computer> findByName(String name)
+	public List<Computer> search(String name, SearchOrder orderBy, int fromBound, int maxResult)
 			throws DataRetrievalFailureException {
-		String sql = "SELECT computer.id, computer.name, introduced, discontinued, company_id, company.name "
-				+ "FROM computer LEFT JOIN company ON (company.id = computer.company_id) "
-				+ "WHERE computer.name LIKE :name" + " ORDER BY computer.name";
+		String sql = null;
 		Map<String, Object> argMap = new HashMap<String, Object>();
-		argMap.put("name", "%"+name+"%");
+		if (name  == null) {
+			sql = "SELECT computer.id, computer.name, introduced, discontinued, company_id, company.name "
+					+ "FROM computer LEFT JOIN company ON (company.id = computer.company_id) "
+					+  orderBy.toString() + " LIMIT :fromBound, :maxResult";
+		}else {
+			sql = "SELECT computer.id, computer.name, introduced, discontinued, company_id, company.name "
+					+ "FROM computer LEFT JOIN company ON (company.id = computer.company_id) "
+					+ "WHERE computer.name LIKE :name " + orderBy.toString() + " LIMIT :fromBound,:maxResult";
+			argMap.put("name", "%"+name+"%");
+		}
+		argMap.put("orderBy", orderBy);
+		argMap.put("fromBound", fromBound);
+		argMap.put("maxResult", maxResult);
 		return namedJdbcTemplate.query(sql, argMap, new ComputerMapper());
 	}
 

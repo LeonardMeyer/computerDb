@@ -16,6 +16,8 @@ public class PaginationTag extends TagSupport {
 	private int recordsPerPage; //Incrément du limit
 	private int nbOfPages; //Nombre de pages total
 	private int previousBound; //Ancienne valeur du firstBound pour calcul
+	private String order; //Ordre à retenir
+	private String currentSearch;
 	
 	public int doStartTag(){
 		JspWriter out = pageContext.getOut();
@@ -25,10 +27,11 @@ public class PaginationTag extends TagSupport {
 			nbOfPages = (int) Math.ceil((double)totalRecords/recordsPerPage);
 			for (int i = 1; i < nbOfPages+1; i++) {
 				if (i == 1) {
-					out.println("<li><a href='/computerDb/Computer/0/"+recordsPerPage+"'>1</a></li>");
+					out.println("<li><a href='/computerDb/Computer/Search?fromBound=0&nbElem="+recordsPerPage
+							+"&orderBy="+order+"'>1</a></li>");
 				}else {
-					out.println("<li><a href='/computerDb/Computer/"+previousBound+
-							"/"+recordsPerPage+"'>"+i+"</a></li>");
+					out.println("<li><a href='/computerDb/Computer/Search?fromBound="+previousBound+"&nbElem="+recordsPerPage
+							+"&orderBy="+order+"'>"+i+"</a></li>");
 					previousBound += recordsPerPage;
 				}
 			}
@@ -73,6 +76,22 @@ public class PaginationTag extends TagSupport {
 
 	public void setPreviousBound(int previousBound) {
 		this.previousBound = previousBound;
+	}
+
+	public String getOrder() {
+		return order;
+	}
+
+	public void setOrder(String order) {
+		this.order = order;
+	}
+
+	public String getCurrentSearch() {
+		return currentSearch;
+	}
+
+	public void setCurrentSearch(String currentSearch) {
+		this.currentSearch = currentSearch;
 	}
 	
 	

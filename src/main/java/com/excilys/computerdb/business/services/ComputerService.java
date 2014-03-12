@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataRetrievalFailureException;
 
+import com.excilys.computerdb.business.dao.SearchOrder;
 import com.excilys.computerdb.business.domain.Computer;
 import com.excilys.computerdb.business.domain.ComputerDto;
 
@@ -40,7 +41,7 @@ public interface ComputerService{
 	 * 
 	 * @return a <code>Collection</code> of <code>Computer</code>s
 	 */
-	List<ComputerDto> findByName(String name) throws DataRetrievalFailureException;
+	List<ComputerDto> search(String name, SearchOrder orderBy, int fromBound, int maxResult) throws DataRetrievalFailureException;
 
 	/**
 	 * Save a <code>Company</code> to the data store, either inserting or

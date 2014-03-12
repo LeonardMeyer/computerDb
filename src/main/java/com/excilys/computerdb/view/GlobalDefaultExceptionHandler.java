@@ -24,6 +24,7 @@ class GlobalDefaultExceptionHandler {
         // Otherwise setup and send the user to a default error-view.
         ModelAndView mav = new ModelAndView();
         mav.addObject("exception", e);
+        mav.addObject("trace", e.getCause().toString());
         mav.addObject("url", req.getRequestURL());
         mav.setViewName(DEFAULT_ERROR_VIEW);
         return mav;
