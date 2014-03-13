@@ -68,6 +68,13 @@ public class ComputerServiceImpl implements ComputerService{
 	public int count() throws DataAccessException {
 		return computerRepo.count();
 	}
+	
+	
+	@Override
+	@Transactional
+	public int countFiltered(String name) throws DataAccessException{
+		return computerRepo.countFiltered(name);
+	}
 
 	public ComputerRepository getComputerRepo() {
 		return computerRepo;

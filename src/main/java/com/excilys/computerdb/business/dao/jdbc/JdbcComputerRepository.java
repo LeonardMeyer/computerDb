@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataRetrievalFailureException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -45,7 +46,14 @@ public class JdbcComputerRepository implements ComputerRepository {
 	public Computer findById(int id) throws DataRetrievalFailureException {
 		String sql = "SELECT * FROM computer LEFT JOIN company ON (company.id = computer.company_id) WHERE computer.id = :id";
 		SqlParameterSource namedParameters = new MapSqlParameterSource("id", id); 
-		return (Computer) namedJdbcTemplate.queryForObject(sql, namedParameters, new ComputerMapper());
+		Computer toReturn;
+		try {
+			toReturn = (Computer) namedJdbcTemplate.queryForObject(sql, namedParameters, new ComputerMapper());
+		} catch (EmptyResultDataAccessException e) {
+			throw new DataRetrievalFailureException(e.getMessage(), e.getRootCause());
+		}
+		
+		return toReturn;
 	}
 
 	@Override
@@ -111,6 +119,14 @@ public class JdbcComputerRepository implements ComputerRepository {
 	public int count() throws DataAccessException {
 		String sql = "SELECT COUNT(id) FROM computer";
 		return jdbcTemplate.queryForObject(sql, Integer.class);
+	}
+	
+	@Override
+	public int countFiltered(String name) throws DataAccessException {
+		String sql = "SELECT COUNT(computer.id) "
+					+ "FROM computer LEFT JOIN company ON (company.id = computer.company_id) "
+					+ "WHERE computer.name LIKE ?";
+		return jdbcTemplate.queryForObject(sql, Integer.class, "%"+name+"%");
 	}
 
 	public NamedParameterJdbcTemplate getNamedJdbcTemplate() {

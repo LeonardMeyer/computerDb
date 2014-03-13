@@ -37,12 +37,24 @@
 						</spring:url>
 					</c:when>
 					<c:when test="${page == 'error'}">
-						<spring:url value="/Computer/${computerId}/Display" var="urlEng">
-							<spring:param name="lang" value="en" />
-						</spring:url>
-						<spring:url value="/Computer/${computerId}/Display" var="urlFr">
-							<spring:param name="lang" value="fr" />
-						</spring:url>
+						<c:choose>
+							<c:when test="${computerId > 0}">
+								<spring:url value="/Computer/${computerId}/Display" var="urlEng">
+									<spring:param name="lang" value="en" />
+								</spring:url>
+								<spring:url value="/Computer/${computerId}/Display" var="urlFr">
+									<spring:param name="lang" value="fr" />
+								</spring:url>
+							</c:when>
+							<c:otherwise>
+								<spring:url value="/Computer/New" var="urlEng">
+									<spring:param name="lang" value="en" />
+								</spring:url>
+								<spring:url value="/Computer/New" var="urlFr">
+									<spring:param name="lang" value="fr" />
+								</spring:url>
+							</c:otherwise>
+						</c:choose>
 					</c:when>
 					<c:otherwise>
 						<spring:url value="" var="urlEng">

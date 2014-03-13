@@ -26,13 +26,24 @@ public class PaginationTag extends TagSupport {
 			setPreviousBound(recordsPerPage);
 			out.println("<ul class='paginatorList'>");
 			nbOfPages = (int) Math.ceil((double)totalRecords/recordsPerPage);
+			
 			for (int i = 1; i < nbOfPages+1; i++) {
 				if (i == 1) {
-					out.println("<li><a href='/computerDb/Computer/Search?fromBound=0&nbElem="+recordsPerPage
-							+"&orderBy="+order+"'>1</a></li>");
-				}else {
-					out.println("<li><a href='/computerDb/Computer/Search?fromBound="+previousBound+"&nbElem="+recordsPerPage
-							+"&orderBy="+order+"'>"+i+"</a></li>");
+					if (!currentSearch.isEmpty()) {
+						out.println("<li><a href='/computerDb/Computer/Search?name="+currentSearch+"&fromBound=0&nbElem="+recordsPerPage
+								+"&orderBy="+order+"'>1</a></li>");
+					}else {
+						out.println("<li><a href='/computerDb/Computer/Search?fromBound=0&nbElem="+recordsPerPage
+								+"&orderBy="+order+"'>1</a></li>");
+					}
+				}else{
+					if (!currentSearch.isEmpty()) {
+						out.println("<li><a href='/computerDb/Computer/Search?name="+currentSearch+"&fromBound="+previousBound+"&nbElem="+recordsPerPage
+								+"&orderBy="+order+"'>"+i+"</a></li>");
+					}else {
+						out.println("<li><a href='/computerDb/Computer/Search?fromBound="+previousBound+"&nbElem="+recordsPerPage
+								+"&orderBy="+order+"'>"+i+"</a></li>");
+					}
 					previousBound += recordsPerPage;
 				}
 			}

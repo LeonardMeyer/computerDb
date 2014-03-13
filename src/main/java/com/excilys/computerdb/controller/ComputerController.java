@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataRetrievalFailureException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -17,7 +19,9 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.computerdb.business.dao.SearchOrder;
+import com.excilys.computerdb.business.domain.Computer;
 import com.excilys.computerdb.business.domain.ComputerDto;
+import com.excilys.computerdb.business.domain.ComputerMapper;
 import com.excilys.computerdb.business.services.CompanyService;
 import com.excilys.computerdb.business.services.ComputerService;
 import com.excilys.computerdb.view.ComputerValidator;
@@ -112,12 +116,12 @@ public class ComputerController {
 		if (name == null) {
 			searchResultsSize = computerService.count();
 		}else {
-			searchResultsSize = computersToReturn.size();
+			searchResultsSize = computerService.countFiltered(name);
 			mav.addObject("currentSearch", name);
 		}
 		mav.addObject("computers", computersToReturn);
 		mav.addObject("orderStrategy", orderBy);
-		mav.addObject("totalComputers",  computerService.count());
+		mav.addObject("totalComputers",  searchResultsSize);
 		mav.addObject("currentBound", fromBound2);
 		mav.addObject("page", "dashboard");
 		return mav;
@@ -127,11 +131,18 @@ public class ComputerController {
 	@RequestMapping(value = "/{id}/Display", method = RequestMethod.GET)
 	public ModelAndView findById(@PathVariable int id) {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("addComputer");
-		mav.addObject("computer", computerService.findById(id));
-		mav.addObject("companies", companyService.findAll());
-		mav.addObject("editionMode", true);
-		mav.addObject("page", "display");
+		ComputerDto computer;
+		try {
+			computer = computerService.findById(id);
+			mav.setViewName("addComputer");
+			mav.addObject("computer", computer);
+			mav.addObject("companies", companyService.findAll());
+			mav.addObject("editionMode", true);
+			mav.addObject("page", "display");
+		} catch (DataRetrievalFailureException e) {
+			mav.setViewName("redirect:/Computer/Search");
+		}
+		
 		return mav;
 	}
 

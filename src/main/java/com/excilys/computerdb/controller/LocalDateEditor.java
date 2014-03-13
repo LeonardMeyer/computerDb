@@ -8,7 +8,11 @@ public class LocalDateEditor extends PropertyEditorSupport {
 
 	@Override
 	public void setAsText(String text) throws IllegalArgumentException {
-		setValue(new LocalDate(text));
+		if (text != null) {
+			if (!text.isEmpty()) {
+				setValue(new LocalDate(text));
+			}
+		}
 	}
 
 }
