@@ -42,20 +42,7 @@ public class ComputerController {
 		ModelAndView mav = new ModelAndView("addComputer", "computer",
 				new ComputerDto());
 		mav.addObject("companies", companyService.findAll());
-		return mav;
-	}
-
-	// Affiche les ordis depuis un index avec tant de résultat
-	@RequestMapping(value = "/{fromBound}/{maxResult}", method = RequestMethod.GET)
-	public ModelAndView findByRange(@PathVariable String fromBound,
-			@PathVariable String maxResult) {
-		int fromBound2 = Integer.parseInt(fromBound);
-		int maxResult2 = Integer.parseInt(maxResult);
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("dashboard");
-		mav.addObject("computers",
-				computerService.findByRange(fromBound2, maxResult2));
-		mav.addObject("totalComputers", computerService.count());
+		mav.addObject("page", "display");
 		return mav;
 	}
 
@@ -75,7 +62,7 @@ public class ComputerController {
 		} else {
 			recordsPerPage = 20;
 		}
-		if (recordsPerPage < 0) {
+		if (recordsPerPage > 0) {
 			mav.addObject("recordsPerPage", recordsPerPage);
 		}
 		int fromBound2 = 0;
@@ -117,6 +104,7 @@ public class ComputerController {
 			}
 		}else {
 			order = SearchOrder.NAME_ASC;
+			orderBy = "NAME_ASC";
 		}
 		
 		List<ComputerDto> computersToReturn = computerService.search(name, order, fromBound2, recordsPerPage);
@@ -129,9 +117,9 @@ public class ComputerController {
 		}
 		mav.addObject("computers", computersToReturn);
 		mav.addObject("orderStrategy", orderBy);
-		mav.addObject("totalComputers", searchResultsSize);
-		mav.addObject("nbElements", nbElem);
-		
+		mav.addObject("totalComputers",  computerService.count());
+		mav.addObject("currentBound", fromBound2);
+		mav.addObject("page", "dashboard");
 		return mav;
 	}
 
@@ -143,6 +131,7 @@ public class ComputerController {
 		mav.addObject("computer", computerService.findById(id));
 		mav.addObject("companies", companyService.findAll());
 		mav.addObject("editionMode", true);
+		mav.addObject("page", "display");
 		return mav;
 	}
 
@@ -155,6 +144,8 @@ public class ComputerController {
 		if (result.hasErrors()) {
 			mav.setViewName("addComputer");
 			mav.addObject("companies", companyService.findAll());
+			mav.addObject("page", "error");
+			mav.addObject("computerId", computer.getComputerId());
 			if (computer.getComputerId() > 0) {
 				mav.addObject("editionMode", true);
 			}
@@ -162,9 +153,10 @@ public class ComputerController {
 		} else {
 			computerService.save(computer);
 		}
-		mav.setViewName("dashboard");
+		mav.setViewName("redirect:/Computer/Search");
 		mav.addObject("computers", computerService.findByRange(0, 20));
 		mav.addObject("totalComputers", computerService.count());
+		mav.addObject("page", "dashboard");
 		return mav;
 	}
 
@@ -172,7 +164,7 @@ public class ComputerController {
 	@RequestMapping(value = "/{computerId}/Delete", method = RequestMethod.POST)
 	public String delete(@PathVariable int computerId) {
 		computerService.delete(computerId);
-		return "redirect:/Computer/0/20";
+		return "redirect:/Computer/Search";
 	}
 
 	// Fourni à Spring le moyen de convertir les string en LocalDate

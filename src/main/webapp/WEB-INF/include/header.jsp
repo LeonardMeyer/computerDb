@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@taglib uri="http://www.springframework.org/tags" prefix="i18l"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
-<title><i18l:message code="appTitle"/></title>
+<title><spring:message code="appTitle"/></title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
 <link href="<c:url value="/css/bootstrap.min.css" />" rel="stylesheet" media="screen">
@@ -15,9 +16,50 @@
 <body>
 	<header class="topbar">
 		<h1 class="fill">
-			<a href="/computerDb/Computer/Search?fromBound=0&nbElem=20"><i18l:message code="appHeader"/></a>
+			<a href="/computerDb/Computer/Search"><spring:message code="appHeader"/></a>
 			<span style="float: right">
-		    	<a href="?lang=en"><i18l:message code="english"/></a>-<a href="?lang=fr"><i18l:message code="french"/></a>
+			<!-- Détermination des URL de switch de lang en fonction de la page en cours -->
+				<c:choose> 
+					<c:when test="${page == 'dashboard'}">
+						<spring:url value="" var="urlEng">
+							<c:if test="${currentSearch != null}"><spring:param name="name" value="${currentSearch}" /></c:if>
+							<c:if test="${fromBound != null}"><spring:param name="fromBound" value="${currentBound}" /></c:if>
+							<c:if test="${recordsPerPage != null}"><spring:param name="nbElem" value="${recordsPerPage}" /></c:if>
+							<c:if test="${orderStrategy != null}"><spring:param name="orderBy" value="${orderStrategy}" /></c:if>
+							<spring:param name="lang" value="en" />
+						</spring:url>
+						<spring:url value="" var="urlFr">
+							<c:if test="${currentSearch != null}"><spring:param name="name" value="${currentSearch}" /></c:if>
+							<c:if test="${fromBound != null}"><spring:param name="fromBound" value="${currentBound}" /></c:if>
+							<c:if test="${recordsPerPage != null}"><spring:param name="nbElem" value="${recordsPerPage}" /></c:if>
+							<c:if test="${orderStrategy != null}"><spring:param name="orderBy" value="${orderStrategy}" /></c:if>
+							<spring:param name="lang" value="fr" />
+						</spring:url>
+					</c:when>
+					<c:when test="${page == 'error'}">
+						<spring:url value="/Computer/${computerId}/Display" var="urlEng">
+							<spring:param name="lang" value="en" />
+						</spring:url>
+						<spring:url value="/Computer/${computerId}/Display" var="urlFr">
+							<spring:param name="lang" value="fr" />
+						</spring:url>
+					</c:when>
+					<c:otherwise>
+						<spring:url value="" var="urlEng">
+							<spring:param name="lang" value="en" />
+						</spring:url>
+						<spring:url value="" var="urlFr">
+							<spring:param name="lang" value="fr" />
+						</spring:url>
+					</c:otherwise>
+				</c:choose>
+				
+		    	<a href="${urlEng}">
+		    		<spring:message code="english"/>
+		    	</a>-
+		    	<a href="${urlFr}">
+		    		<spring:message code="french"/>
+		    	</a>
 			</span>
 		</h1>
 	</header>

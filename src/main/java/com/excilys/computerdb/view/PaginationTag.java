@@ -17,7 +17,8 @@ public class PaginationTag extends TagSupport {
 	private int nbOfPages; //Nombre de pages total
 	private int previousBound; //Ancienne valeur du firstBound pour calcul
 	private String order; //Ordre à retenir
-	private String currentSearch;
+	private String currentSearch; //Recherche en cours
+	private int currentBound; //Premier enregistrement courant
 	
 	public int doStartTag(){
 		JspWriter out = pageContext.getOut();
@@ -92,6 +93,14 @@ public class PaginationTag extends TagSupport {
 
 	public void setCurrentSearch(String currentSearch) {
 		this.currentSearch = currentSearch;
+	}
+
+	public int getCurrentBound() {
+		return currentBound;
+	}
+
+	public void setCurrentBound(int currentBound) {
+		this.currentBound = currentBound;
 	}
 	
 	
