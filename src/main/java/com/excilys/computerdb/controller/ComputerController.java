@@ -62,7 +62,6 @@ public class ComputerController {
 		int recordsPerPage;
 		if (nbElem != null) {
 			recordsPerPage = Integer.parseInt(nbElem);
-			
 		} else {
 			recordsPerPage = 20;
 		}
@@ -162,12 +161,14 @@ public class ComputerController {
 			}
 			return mav;
 		} else {
-			computerService.save(computer);
+			try {
+				computerService.save(computer);
+			} catch (DataRetrievalFailureException e) { //Pour se prévenir des findById(0) sur company
+				mav.setViewName("redirect:/Computer/Search");
+			}
+			
 		}
 		mav.setViewName("redirect:/Computer/Search");
-		mav.addObject("computers", computerService.findByRange(0, 20));
-		mav.addObject("totalComputers", computerService.count());
-		mav.addObject("page", "dashboard");
 		return mav;
 	}
 

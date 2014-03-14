@@ -23,14 +23,14 @@
 					<c:when test="${page == 'dashboard'}">
 						<spring:url value="" var="urlEng">
 							<c:if test="${currentSearch != null}"><spring:param name="name" value="${currentSearch}" /></c:if>
-							<c:if test="${fromBound != null}"><spring:param name="fromBound" value="${currentBound}" /></c:if>
+							<c:if test="${currentBound != null}"><spring:param name="fromBound" value="${currentBound}" /></c:if>
 							<c:if test="${recordsPerPage != null}"><spring:param name="nbElem" value="${recordsPerPage}" /></c:if>
 							<c:if test="${orderStrategy != null}"><spring:param name="orderBy" value="${orderStrategy}" /></c:if>
 							<spring:param name="lang" value="en" />
 						</spring:url>
 						<spring:url value="" var="urlFr">
 							<c:if test="${currentSearch != null}"><spring:param name="name" value="${currentSearch}" /></c:if>
-							<c:if test="${fromBound != null}"><spring:param name="fromBound" value="${currentBound}" /></c:if>
+							<c:if test="${currentBound != null}"><spring:param name="fromBound" value="${currentBound}" /></c:if>
 							<c:if test="${recordsPerPage != null}"><spring:param name="nbElem" value="${recordsPerPage}" /></c:if>
 							<c:if test="${orderStrategy != null}"><spring:param name="orderBy" value="${orderStrategy}" /></c:if>
 							<spring:param name="lang" value="fr" />

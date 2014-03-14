@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataRetrievalFailureException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -44,7 +46,13 @@ public class JdbcCompanyRepository implements CompanyRepository{
 	public Company findById(int id) throws DataAccessException {
 		String sql = "SELECT * FROM company WHERE company.id = :id";
 		SqlParameterSource namedParameters = new MapSqlParameterSource("id", id); 
-		return (Company) namedJdbcTemplate.queryForObject(sql, namedParameters, new CompanyMapper());
+		Company toReturn = null;
+		try {
+			toReturn = (Company) namedJdbcTemplate.queryForObject(sql, namedParameters, new CompanyMapper());
+		} catch (EmptyResultDataAccessException e) {
+			throw new DataRetrievalFailureException(e.getMessage(), e.getRootCause());
+		}
+		return toReturn;
 	}
 
 
