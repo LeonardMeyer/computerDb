@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataRetrievalFailureException;
-import org.springframework.stereotype.Repository;
-
 import com.excilys.computerdb.business.domain.Computer;
 
 public interface ComputerRepository {
@@ -72,12 +70,12 @@ public interface ComputerRepository {
 	 *         
 	 * @return a <code>int</code>
 	 */
-	int count() throws DataAccessException;	
+	long count() throws DataAccessException;	
 	
 	/**
 	 * Count the number of filtered <code>Computer</code>s of the data store.
 	 *         
 	 * @return a <code>int</code>
 	 */
-	int countFiltered(String name) throws DataAccessException;
+	long countFiltered(String name) throws DataAccessException;
 }

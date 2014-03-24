@@ -9,13 +9,10 @@ import org.springframework.jdbc.core.RowMapper;
 
 public class ComputerMapper implements RowMapper<Computer> {
 
-	public ComputerMapper() {
-		// TODO Auto-generated constructor stub
-	}
 
 	@Override
 	public Computer mapRow(ResultSet rs, int arg1) throws SQLException {
-		int id = rs.getInt("id");
+		int id = rs.getInt("computerId");
 		String name = rs.getString("name");
 		Timestamp introducedTs = rs.getTimestamp("introduced");
 		LocalDate introduced = null;

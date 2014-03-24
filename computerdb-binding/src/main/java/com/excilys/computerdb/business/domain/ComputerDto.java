@@ -1,21 +1,28 @@
 package com.excilys.computerdb.business.domain;
 
-import org.joda.time.LocalDate;
+import org.hibernate.validator.constraints.NotEmpty;
 
-public class ComputerDto {
+import com.excilys.computerdb.business.annotations.ValidDate;
+
+
+public class ComputerDto{
 	private int computerId;
+	@NotEmpty
 	private String name;
-	private LocalDate introduced;
-	private LocalDate discontinued;
+	@ValidDate
+	private String introduced;
+	@ValidDate
+	private String discontinued;
 	private int companyId;
 	private String companyName;
+
 	
 	public ComputerDto() {
-		// TODO Auto-generated constructor stub
+
 	}
 	
-	public ComputerDto(int computerId, String name, LocalDate introduced,
-			LocalDate discontinued, int companyId, String companyName) {
+	public ComputerDto(int computerId, String name, String introduced,
+			String discontinued, int companyId, String companyName) {
 		super();
 		this.computerId = computerId;
 		this.name = name;
@@ -23,6 +30,7 @@ public class ComputerDto {
 		this.discontinued = discontinued;
 		this.companyId = companyId;
 		this.companyName = companyName;
+		
 	}
 	
 	
@@ -38,16 +46,16 @@ public class ComputerDto {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public LocalDate getIntroduced() {
+	public String getIntroduced() {
 		return introduced;
 	}
-	public void setIntroduced(LocalDate introduced) {
+	public void setIntroduced(String introduced) {
 		this.introduced = introduced;
 	}
-	public LocalDate getDiscontinued() {
+	public String getDiscontinued() {
 		return discontinued;
 	}
-	public void setDiscontinued(LocalDate discontinued) {
+	public void setDiscontinued(String discontinued) {
 		this.discontinued = discontinued;
 	}
 	public int getCompanyId() {
@@ -62,6 +70,8 @@ public class ComputerDto {
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
 	}
+
+
 	
 	
 }

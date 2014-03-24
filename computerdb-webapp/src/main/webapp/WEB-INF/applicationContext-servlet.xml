@@ -12,9 +12,10 @@
         http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
+	<import resource="classpath:service-servlet.xml"/>
 
 	<!-- - Enable auto-detection of annotations -->
-	<context:component-scan base-package="com.excilys.computerdb" />
+	<context:component-scan base-package="com.excilys.computerdb.controller" />
 
 	<!-- - Enable S-MVC annotations -->
 	<mvc:annotation-driven />
@@ -23,17 +24,6 @@
 	<mvc:resources mapping="/css/**" location="/WEB-INF/css/" />
 	<mvc:resources mapping="/js/**" location="/WEB-INF/js/" />
 
-	<!-- - Automatic JNDI datasource lookup -->
-	<jee:jndi-lookup id="dataSource" jndi-name="java:/computerDS"
-		expected-type="javax.sql.DataSource" />
-
-	<!-- - Transaction configuration -->
-	<bean id="txManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
-
-	<tx:annotation-driven transaction-manager="txManager" />
 
 	<!-- -View resolver -->
 	<bean id="viewResolver"
@@ -63,7 +53,7 @@
 	</bean>
 
 	<bean id="handlerMapping"
-		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
 		<property name="interceptors">
 			<ref bean="localeChangeInterceptor" />
 		</property>

@@ -17,7 +17,137 @@
 	<properties>
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
+
+		<computerdb-core.version>2.2.0-RELEASE</computerdb-core.version>
+		<computerdb-persistence.version>2.2.0-RELEASE</computerdb-persistence.version>
+		<computerdb-binding.version>2.2.0-RELEASE</computerdb-binding.version>
+		<computerdb-service.version>2.2.0-RELEASE</computerdb-service.version>
+
+		<jstl.version>1.2</jstl.version>
+		<jsp-api.version>2.0</jsp-api.version>
+		<validation-api.version>1.1.0.Final</validation-api.version>
+		<mysql-connector.version>5.1.27</mysql-connector.version>
+		<servlet-api.version>3.0.1</servlet-api.version>
+		<jboss-servlet-api_3.1_spec.version>1.0.0.Final</jboss-servlet-api_3.1_spec.version>
+
+		<joda-time.version>2.3</joda-time.version>
+		<jadira.version>3.1.0.GA</jadira.version>
+		<logback.version>1.1.1</logback.version>
+		<slf4j-api.version>1.7.6</slf4j-api.version>
+		<javassist.version>3.12.1.GA</javassist.version>
+
+		<springframework.version>4.0.2.RELEASE</springframework.version>
+		<hibernate-valid.version>5.0.3.Final</hibernate-valid.version>
+		<hibernate-entity.version>4.3.1.Final</hibernate-entity.version>
 	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- Modules -->
+			<dependency>
+				<groupId>com.excilys</groupId>
+				<artifactId>computerdb-core</artifactId>
+				<version>${computerdb-core.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.excilys</groupId>
+				<artifactId>computerdb-persistence</artifactId>
+				<version>${computerdb-persistence.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.excilys</groupId>
+				<artifactId>computerdb-binding</artifactId>
+				<version>${computerdb-binding.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.excilys</groupId>
+				<artifactId>computerdb-service</artifactId>
+				<version>${computerdb-service.version}</version>
+			</dependency>
+			<!-- Spring -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-orm</artifactId>
+				<version>${springframework.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-webmvc</artifactId>
+				<version>${springframework.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>${springframework.version}</version>
+			</dependency>
+			<!-- Joda -->
+			<dependency>
+				<groupId>joda-time</groupId>
+				<artifactId>joda-time</artifactId>
+				<version>${joda-time.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jadira.usertype</groupId>
+				<artifactId>usertype.core</artifactId>
+				<version>${jadira.version}</version>
+			</dependency>
+			<!-- Logging -->
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<version>${logback.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-core</artifactId>
+				<version>${logback.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j-api.version}</version>
+			</dependency>
+			<!-- Servlet -->
+			<dependency>
+				<groupId>org.jboss.spec.javax.servlet</groupId>
+				<artifactId>jboss-servlet-api_3.1_spec</artifactId>
+				<version>${jboss-servlet-api_3.1_spec.version}</version>
+			</dependency>
+			<!-- JSP -->
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>jsp-api</artifactId>
+				<version>${jsp-api.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>jstl</groupId>
+				<artifactId>jstl</artifactId>
+				<version>${jstl.version}</version>
+			</dependency>
+			<!-- Database -->
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>${mysql-connector.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-entitymanager</artifactId>
+				<version>${hibernate-entity.version}</version>
+			</dependency>
+			<!-- Annotations -->
+			<dependency>
+				<groupId>javax.validation</groupId>
+				<artifactId>validation-api</artifactId>
+				<version>${validation-api.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-validator</artifactId>
+				<version>${hibernate-valid.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<reporting>
 		<plugins>

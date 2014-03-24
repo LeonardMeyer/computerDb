@@ -64,15 +64,15 @@ public class ComputerServiceImpl implements ComputerService{
 	}
 
 	@Override
-	@Transactional
-	public int count() throws DataAccessException {
+	@Transactional(readOnly=true)
+	public long count() throws DataAccessException {
 		return computerRepo.count();
 	}
 	
 	
 	@Override
-	@Transactional
-	public int countFiltered(String name) throws DataAccessException{
+	@Transactional(readOnly=true)
+	public long countFiltered(String name) throws DataAccessException{
 		return computerRepo.countFiltered(name);
 	}
 

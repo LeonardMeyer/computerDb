@@ -2,7 +2,6 @@ package com.excilys.computerdb.view;
 
 import java.io.IOException;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.TagSupport;
@@ -12,6 +11,11 @@ import org.slf4j.LoggerFactory;
 
 public class PaginationTag extends TagSupport {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5763688616397525680L;
+
 	private Logger logger = LoggerFactory.getLogger(PaginationTag.class);
 	
 	private int totalRecords; //Nombre d'enregistrements

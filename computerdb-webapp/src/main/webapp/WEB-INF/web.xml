@@ -21,7 +21,7 @@
 
 	<context-param>
 		<param-name>spring.profiles.active</param-name>
-		<param-value>jdbc</param-value>
+		<param-value>jpa</param-value>
 	</context-param>
 
 	<servlet>

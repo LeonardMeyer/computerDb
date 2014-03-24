@@ -6,7 +6,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataRetrievalFailureException;
 
 import com.excilys.computerdb.business.dao.SearchOrder;
-import com.excilys.computerdb.business.domain.Computer;
 import com.excilys.computerdb.business.domain.ComputerDto;
 
 public interface ComputerService{
@@ -66,7 +65,7 @@ public interface ComputerService{
 	 * 
 	 * @return a <code>int</code>
 	 */
-	int count() throws DataAccessException;
+	long count() throws DataAccessException;
 	
 	
 	/**
@@ -74,6 +73,6 @@ public interface ComputerService{
 	 *         
 	 * @return a <code>int</code>
 	 */
-	int countFiltered(String name) throws DataAccessException;
+	long countFiltered(String name) throws DataAccessException;
 
 }

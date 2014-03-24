@@ -2,10 +2,13 @@ package com.excilys.computerdb.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.joda.time.LocalDate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataRetrievalFailureException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -19,9 +22,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.computerdb.business.dao.SearchOrder;
-import com.excilys.computerdb.business.domain.Computer;
 import com.excilys.computerdb.business.domain.ComputerDto;
-import com.excilys.computerdb.business.domain.ComputerMapper;
 import com.excilys.computerdb.business.services.CompanyService;
 import com.excilys.computerdb.business.services.ComputerService;
 import com.excilys.computerdb.view.ComputerValidator;
@@ -30,6 +31,7 @@ import com.excilys.computerdb.view.ComputerValidator;
 @RequestMapping("/Computer")
 public class ComputerController {
 
+	private Logger logger = LoggerFactory.getLogger(ComputerController.class);
 	private final ComputerService computerService;
 	private final CompanyService companyService;
 
@@ -111,7 +113,7 @@ public class ComputerController {
 		}
 		
 		List<ComputerDto> computersToReturn = computerService.search(name, order, fromBound2, recordsPerPage);
-		int searchResultsSize = 0;
+		long searchResultsSize = 0;
 		if (name == null) {
 			searchResultsSize = computerService.count();
 		}else {
@@ -147,9 +149,9 @@ public class ComputerController {
 
 	// Edition d'un computer et redirection
 	@RequestMapping(value = "/Save", method = RequestMethod.POST)
-	public ModelAndView save(@ModelAttribute("computer") ComputerDto computer,
+	public ModelAndView save(@Valid @ModelAttribute("computer") ComputerDto computer,
 			BindingResult result, SessionStatus status) {
-		new ComputerValidator().validate(computer, result);
+
 		ModelAndView mav = new ModelAndView();
 		if (result.hasErrors()) {
 			mav.setViewName("addComputer");
@@ -164,6 +166,7 @@ public class ComputerController {
 			try {
 				computerService.save(computer);
 			} catch (DataRetrievalFailureException e) { //Pour se prévenir des findById(0) sur company
+				logger.error("Erreur lors de la sauvegarde du model", e);
 				mav.setViewName("redirect:/Computer/Search");
 			}
 			
@@ -179,10 +182,5 @@ public class ComputerController {
 		return "redirect:/Computer/Search";
 	}
 
-	// Fourni à Spring le moyen de convertir les string en LocalDate
-	@InitBinder
-	protected void initBinder(WebDataBinder binder) {
-		binder.registerCustomEditor(LocalDate.class, new LocalDateEditor());
-	}
 
 }

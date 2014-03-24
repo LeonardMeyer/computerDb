@@ -7,8 +7,6 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.dao.DataAccessException;
@@ -28,10 +26,6 @@ import com.excilys.computerdb.business.domain.ComputerMapper;
 @Repository(value="JdbcComputerRepository")
 @Profile(value="jdbc")
 public class JdbcComputerRepository implements ComputerRepository {
-	
-
-	private Logger logger = LoggerFactory
-			.getLogger(JdbcComputerRepository.class);
 
 	private NamedParameterJdbcTemplate namedJdbcTemplate;
 	private JdbcTemplate jdbcTemplate;
@@ -44,7 +38,7 @@ public class JdbcComputerRepository implements ComputerRepository {
 
 	@Override
 	public Computer findById(int id) throws DataRetrievalFailureException {
-		String sql = "SELECT * FROM computer LEFT JOIN company ON (company.id = computer.company_id) WHERE computer.id = :id";
+		String sql = "SELECT * FROM computer LEFT JOIN company ON (company.id = computer.company_id) WHERE computerId = :id";
 		SqlParameterSource namedParameters = new MapSqlParameterSource("id", id); 
 		Computer toReturn;
 		try {
@@ -59,7 +53,7 @@ public class JdbcComputerRepository implements ComputerRepository {
 	@Override
 	public List<Computer> findByRange(int fromBound, int maxResult)
 			throws DataRetrievalFailureException {
-		String sql = "SELECT computer.id, computer.name, introduced, discontinued, company_id, company.name FROM computer "
+		String sql = "SELECT computerId, computer.name, introduced, discontinued, company_id, company.name FROM computer "
 				+ "LEFT JOIN company ON (company.id = computer.company_id) "
 				+ "ORDER BY computer.name LIMIT :fromBound,:maxResult";
 		Map<String, Object> argMap = new HashMap<String, Object>();
@@ -74,11 +68,11 @@ public class JdbcComputerRepository implements ComputerRepository {
 		String sql = null;
 		Map<String, Object> argMap = new HashMap<String, Object>();
 		if (name  == null) {
-			sql = "SELECT computer.id, computer.name, introduced, discontinued, company_id, company.name "
+			sql = "SELECT computerId, computer.name, introduced, discontinued, company_id, company.name "
 					+ "FROM computer LEFT JOIN company ON (company.id = computer.company_id) "
 					+  orderBy.toString() + " LIMIT :fromBound, :maxResult";
 		}else {
-			sql = "SELECT computer.id, computer.name, introduced, discontinued, company_id, company.name "
+			sql = "SELECT computerId, computer.name, introduced, discontinued, company_id, company.name "
 					+ "FROM computer LEFT JOIN company ON (company.id = computer.company_id) "
 					+ "WHERE computer.name LIKE :name " + orderBy.toString() + " LIMIT :fromBound,:maxResult";
 			argMap.put("name", "%"+name+"%");
@@ -91,7 +85,7 @@ public class JdbcComputerRepository implements ComputerRepository {
 
 	@Override
 	public void save(Computer computer) throws DataAccessException {
-		String sql = "INSERT INTO computer (id, name, introduced, discontinued, company_id) VALUES(:id, :name, :intro, :disc, :compId)"
+		String sql = "INSERT INTO computer (computerId, name, introduced, discontinued, company_id) VALUES(:id, :name, :intro, :disc, :compId)"
 				+ "ON DUPLICATE KEY UPDATE name = :name, introduced = :intro, discontinued = :disc, company_id = :compId";
 		Map<String, Object> argMap = new HashMap<String, Object>();
 		argMap.put("id", computer.getComputerId());
@@ -100,7 +94,7 @@ public class JdbcComputerRepository implements ComputerRepository {
 				.toDateTimeAtStartOfDay().getMillis()));
 		argMap.put("disc", new Timestamp(computer.getDiscontinued()
 				.toDateTimeAtStartOfDay().getMillis()));
-		if (computer.getCompany().getCompanyId() == -1) {
+		if (computer.getCompany() == null) {
 			argMap.put("compId", null);
 		} else {
 			argMap.put("compId", computer.getCompany().getCompanyId());
@@ -110,20 +104,20 @@ public class JdbcComputerRepository implements ComputerRepository {
 
 	@Override
 	public void delete(int id) throws DataAccessException {
-		String sql = "DELETE FROM computer WHERE id = :toDel";  
+		String sql = "DELETE FROM computer WHERE computerId = :toDel";  
 		SqlParameterSource namedParameters = new MapSqlParameterSource("toDel", id);  
 		namedJdbcTemplate.update(sql, namedParameters);  
 	}
 
 	@Override
-	public int count() throws DataAccessException {
-		String sql = "SELECT COUNT(id) FROM computer";
+	public long count() throws DataAccessException {
+		String sql = "SELECT COUNT(computerId) FROM computer";
 		return jdbcTemplate.queryForObject(sql, Integer.class);
 	}
 	
 	@Override
-	public int countFiltered(String name) throws DataAccessException {
-		String sql = "SELECT COUNT(computer.id) "
+	public long countFiltered(String name) throws DataAccessException {
+		String sql = "SELECT COUNT(computerId) "
 					+ "FROM computer LEFT JOIN company ON (company.id = computer.company_id) "
 					+ "WHERE computer.name LIKE ?";
 		return jdbcTemplate.queryForObject(sql, Integer.class, "%"+name+"%");

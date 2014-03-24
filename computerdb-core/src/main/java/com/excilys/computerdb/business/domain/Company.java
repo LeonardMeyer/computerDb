@@ -4,8 +4,19 @@
 package com.excilys.computerdb.business.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+
+
+
+
+
+
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 import org.springframework.stereotype.Component;
 
@@ -13,14 +24,19 @@ import org.springframework.stereotype.Component;
  * @author Leonard
  *
  */
-@Component
+@Entity
+@Table(name="company")
 public class Company implements Serializable {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 8904031966606029875L;
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id")
 	private int companyId;
+	@Column
 	private String name;
 
 	public Company() {
