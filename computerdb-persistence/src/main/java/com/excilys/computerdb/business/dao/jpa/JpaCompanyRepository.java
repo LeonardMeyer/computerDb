@@ -16,6 +16,9 @@ import org.springframework.stereotype.Repository;
 import com.excilys.computerdb.business.dao.CompanyRepository;
 import com.excilys.computerdb.business.domain.Company;
 import com.excilys.computerdb.business.domain.Computer;
+import com.excilys.computerdb.business.domain.QCompany;
+import com.excilys.computerdb.business.domain.QComputer;
+import com.mysema.query.jpa.impl.JPAQuery;
 
 @Repository
 @Profile(value="jpa")
@@ -26,12 +29,10 @@ public class JpaCompanyRepository implements CompanyRepository {
 	
 	@Override
 	public List<Company> findAll() throws DataAccessException {
-		CriteriaBuilder builder = em.getCriteriaBuilder();
-		CriteriaQuery<Company> criteria = builder.createQuery(Company.class);
-		Root<Company> root = criteria.from(Company.class);
-		criteria.orderBy(builder.asc(root.get("name")));
-		criteria.select(root);
-		return em.createQuery(criteria).getResultList();
+		QCompany company = QCompany.company;
+		JPAQuery query = new JPAQuery(em);
+		query.from(company).orderBy(company.name.asc());
+		return query.list(company);
 	}
 
 	@Override

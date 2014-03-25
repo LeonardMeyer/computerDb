@@ -39,6 +39,8 @@
 		<springframework.version>4.0.2.RELEASE</springframework.version>
 		<hibernate-valid.version>5.0.3.Final</hibernate-valid.version>
 		<hibernate-entity.version>4.3.1.Final</hibernate-entity.version>
+		<querydsl-apt.version>3.3.2</querydsl-apt.version>
+		<querydsl-jpa.version>3.3.2</querydsl-jpa.version>
 	</properties>
 
 	<dependencyManagement>
@@ -146,9 +148,42 @@
 				<artifactId>hibernate-validator</artifactId>
 				<version>${hibernate-valid.version}</version>
 			</dependency>
+			<!-- QueryDsl -->
+			<dependency>
+				<groupId>com.mysema.querydsl</groupId>
+				<artifactId>querydsl-apt</artifactId>
+				<version>${querydsl-apt.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.mysema.querydsl</groupId>
+				<artifactId>querydsl-jpa</artifactId>
+				<version>${querydsl-jpa.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.mysema.maven</groupId>
+				<artifactId>apt-maven-plugin</artifactId>
+				<version>1.0.9</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>process</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>target/generated-sources/java</outputDirectory>
+							<processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 
+	
 	<reporting>
 		<plugins>
 			<plugin>
@@ -175,4 +210,5 @@
 			</plugin>
 		</plugins>
 	</reporting>
+
 </project>

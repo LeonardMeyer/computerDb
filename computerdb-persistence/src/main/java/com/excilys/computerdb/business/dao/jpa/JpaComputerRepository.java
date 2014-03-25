@@ -3,13 +3,9 @@ package com.excilys.computerdb.business.dao.jpa;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceUnit;
-import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
@@ -23,7 +19,9 @@ import com.excilys.computerdb.business.dao.ComputerRepository;
 import com.excilys.computerdb.business.dao.SearchOrder;
 import com.excilys.computerdb.business.domain.Company;
 import com.excilys.computerdb.business.domain.Computer;
-import com.mysql.jdbc.NotImplemented;
+import com.excilys.computerdb.business.domain.QCompany;
+import com.excilys.computerdb.business.domain.QComputer;
+import com.mysema.query.jpa.impl.JPAQuery;
 
 @Repository
 @Profile(value = "jpa")
@@ -37,55 +35,48 @@ public class JpaComputerRepository implements ComputerRepository {
 		return em.find(Computer.class, id);
 	}
 
-
 	@Override
 	public List<Computer> search(String name, SearchOrder orderBy,
 			int fromBound, int maxResult) throws DataRetrievalFailureException {
 
-		CriteriaBuilder builder = em.getCriteriaBuilder();
-		CriteriaQuery<Computer> criteria = builder.createQuery(Computer.class);
-		Root<Computer> root = criteria.from(Computer.class);
-		Join<Computer, Company> company = root.join("company", JoinType.LEFT);
-		criteria.select(root);
+		QComputer computer = QComputer.computer;
+		QCompany company = QCompany.company;
+		JPAQuery query = new JPAQuery(em);
+		query.from(computer).leftJoin(computer.company, company);
 		if (name != null) {
-			String search = new StringBuilder("%").append(name).append("%")
-					.toString();
-			criteria.where(builder.like(root.get("name").as(String.class),
-					search));
+			query.where(computer.name.like("%"+name+"%"));
 		}
 
 		switch (orderBy) {
 		case COMPANY_ASC:
-			criteria.orderBy(builder.asc(company.get("name")));
+			query.orderBy(company.name.asc());
 			break;
 		case COMPANY_DESC:
-			criteria.orderBy(builder.desc(company.get("name")));
+			query.orderBy(company.name.desc());
 			break;
 		case DISC_ASC:
-			criteria.orderBy(builder.asc(root.get("discontinued")));
+			query.orderBy(computer.discontinued.asc());
 			break;
 		case DISC_DESC:
-			criteria.orderBy(builder.desc(root.get("discontinued")));
+			query.orderBy(computer.discontinued.desc());
 			break;
 		case INTRO_ASC:
-			criteria.orderBy(builder.asc(root.get("introduced")));
+			query.orderBy(computer.introduced.asc());
 			break;
 		case INTRO_DESC:
-			criteria.orderBy(builder.desc(root.get("introduced")));
+			query.orderBy(computer.introduced.desc());
 			break;
 		case NAME_ASC:
-			criteria.orderBy(builder.asc(root.get("name")));
+			query.orderBy(computer.name.asc());
 			break;
 		case NAME_DESC:
-			criteria.orderBy(builder.desc(root.get("name")));
+			query.orderBy(computer.name.desc());
 			break;
 		default:
-			criteria.orderBy(builder.asc(root.get("name")));
+			query.orderBy(computer.name.asc());
 			break;
 		}
-		return (List<Computer>) em.createQuery(criteria)
-				.setFirstResult(fromBound).setMaxResults(maxResult)
-				.getResultList();
+		return query.limit(maxResult).offset(fromBound).list(computer);
 	}
 
 	@Override
@@ -101,31 +92,24 @@ public class JpaComputerRepository implements ComputerRepository {
 
 	@Override
 	public long count() throws DataAccessException {
-		CriteriaBuilder builder = em.getCriteriaBuilder();
-		CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
-		Root<Computer> root = criteria.from(Computer.class);
-		criteria.select(builder.count(root));
-		root.join("company", JoinType.LEFT);
-
-		return (long) em.createQuery(criteria).getSingleResult();
+		QComputer computer = QComputer.computer;
+		JPAQuery query = new JPAQuery(em);
+		query.from(computer);
+		return query.count();
 	}
 
 	@Override
 	public long countFiltered(String name) throws DataAccessException {
-		CriteriaBuilder builder = em.getCriteriaBuilder();
-		CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
-		Root<Computer> root = criteria.from(Computer.class);
-		criteria.select(builder.count(root));
-		root.join("company", JoinType.LEFT);
+		QComputer computer = QComputer.computer;
+		QCompany company = QCompany.company;
+		JPAQuery query = new JPAQuery(em);
+		query.from(computer).leftJoin(computer.company, company);
 
 		if (name != null) {
-			String search = new StringBuilder("%").append(name).append("%")
-					.toString();
-			criteria.where(builder.like(root.get("name").as(String.class),
-					search));
+			query.where(computer.name.like("%"+name+"%"));
 		}
 
-		return (long) em.createQuery(criteria).getSingleResult();
+		return query.count();
 	}
 
 }

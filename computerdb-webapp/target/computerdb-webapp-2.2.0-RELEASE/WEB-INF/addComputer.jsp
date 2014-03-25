@@ -32,7 +32,7 @@
 				<label for="introduced"><spring:message code="introHeader" />:</label>
 				<div class="input">
 					<form:input type="date" path="introduced" />
-					<span class="help-inline">YYYY-MM-DD</span>
+					<span class="help-inline"><spring:message code="dateFormat" /></span>
 					<form:errors path="introduced" cssClass="isa_error help-inline" />
 				</div>
 			</div>
@@ -40,7 +40,7 @@
 				<label for="discontinued"><spring:message code="discHeader" />:</label>
 				<div class="input">
 					<form:input type="date" path="discontinued" />
-					<span class="help-inline">YYYY-MM-DD</span>
+					<span class="help-inline"><spring:message code="dateFormat" /></span>
 					<form:errors path="discontinued" cssClass="isa_error help-inline" />
 				</div>
 			</div>
