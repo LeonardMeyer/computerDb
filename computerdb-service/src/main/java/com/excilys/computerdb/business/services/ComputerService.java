@@ -21,18 +21,6 @@ public interface ComputerService{
 	 */
 	ComputerDto findById(int id) throws DataRetrievalFailureException;
 
-	/**
-	 * Retrieve all <code>Computer</code> from the data store.
-	 * 
-	 * @param fromBound
-	 *            Index dé départ de la récupération
-	 * @param maxResult
-	 *            Le nombre de lignes à retourner depuis fromBound
-	 * 
-	 * @return a <code>Collection</code> of <code>Computer</code>
-	 */
-	List<ComputerDto> findByRange(int fromBound, int maxResult)
-			throws DataRetrievalFailureException;
 
 	/**
 	 * Retrieve <code>Computer</code>s from the data store given a specific

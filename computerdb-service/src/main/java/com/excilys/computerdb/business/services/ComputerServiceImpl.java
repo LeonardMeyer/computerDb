@@ -29,18 +29,6 @@ public class ComputerServiceImpl implements ComputerService{
 
 	@Override
 	@Transactional(readOnly=true)
-	public List<ComputerDto> findByRange(int fromBound, int maxResult)
-			throws DataRetrievalFailureException {
-		List<Computer> computers = computerRepo.findByRange(fromBound, maxResult);
-		List<ComputerDto> dtos = new ArrayList<>();
-		for (Computer computer : computers) {
-			dtos.add(dtoMapper.dtoFromComputer(computer));
-		}
-		return dtos;
-	}
-
-	@Override
-	@Transactional(readOnly=true)
 	public List<ComputerDto> search(String name, SearchOrder orderBy, int fromBound, int maxResult)
 			throws DataRetrievalFailureException {
 		List<Computer> computers = computerRepo.search(name, orderBy, fromBound, maxResult);

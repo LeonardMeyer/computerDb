@@ -51,18 +51,6 @@ public class JdbcComputerRepository implements ComputerRepository {
 	}
 
 	@Override
-	public List<Computer> findByRange(int fromBound, int maxResult)
-			throws DataRetrievalFailureException {
-		String sql = "SELECT computerId, computer.name, introduced, discontinued, company_id, company.name FROM computer "
-				+ "LEFT JOIN company ON (company.id = computer.company_id) "
-				+ "ORDER BY computer.name LIMIT :fromBound,:maxResult";
-		Map<String, Object> argMap = new HashMap<String, Object>();
-		argMap.put("fromBound", fromBound);
-		argMap.put("maxResult", maxResult);
-		return namedJdbcTemplate.query(sql, argMap, new ComputerMapper());
-	}
-
-	@Override
 	public List<Computer> search(String name, SearchOrder orderBy, int fromBound, int maxResult)
 			throws DataRetrievalFailureException {
 		String sql = null;
