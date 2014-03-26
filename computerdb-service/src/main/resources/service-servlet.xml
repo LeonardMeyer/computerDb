@@ -15,18 +15,10 @@
 	<context:component-scan base-package="com.excilys.computerdb.business.services" />
 
 	<!-- - Transaction configuration -->
-	<beans profile="jdbc">
-		<bean id="txManager"
-			class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-			<property name="dataSource" ref="dataSource" />
-		</bean>
-		<tx:annotation-driven transaction-manager="txManager" />
-	</beans>
 	<beans profile="jpa">
 		<bean id="txManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 			<property name="entityManagerFactory" ref="entityManagerFactory" />
 		</bean>
 		<tx:annotation-driven transaction-manager="txManager" />
 	</beans>
-
 </beans>

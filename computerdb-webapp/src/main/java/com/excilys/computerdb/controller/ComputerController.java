@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataRetrievalFailureException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -76,43 +78,44 @@ public class ComputerController {
 		}
 		
 		//Détermination de l'ordre de retour
-		SearchOrder order = null;
+		PageRequest page = null;
 		if (orderBy != null) {
 			switch (orderBy) {
 			case "NAME_ASC":
-				order = SearchOrder.NAME_ASC;
+				page = new PageRequest(fromBound2, recordsPerPage, Direction.ASC, "name");
 				break;
 			case "NAME_DESC":
-				order = SearchOrder.NAME_DESC;
+				page = new PageRequest(fromBound2, recordsPerPage, Direction.DESC, "name");
 				break;
 			case "INTRO_ASC":
-				order = SearchOrder.INTRO_ASC;
+				page = new PageRequest(fromBound2, recordsPerPage, Direction.ASC, "introduced");
 				break;
 			case "INTRO_DESC":
-				order = SearchOrder.INTRO_DESC;
+				page = new PageRequest(fromBound2, recordsPerPage, Direction.DESC, "introduced");
 				break;
 			case "DISC_ASC":
-				order = SearchOrder.DISC_ASC;
+				page = new PageRequest(fromBound2, recordsPerPage, Direction.ASC, "discontinued");;
 				break;
 			case "DISC_DESC":
-				order = SearchOrder.DISC_DESC;
+				page = new PageRequest(fromBound2, recordsPerPage, Direction.DESC, "discontinued");
 				break;
 			case "COMPANY_ASC":
-				order = SearchOrder.COMPANY_ASC;
+				page = new PageRequest(fromBound2, recordsPerPage, Direction.ASC, "company.name");
 				break;
 			case "COMPANY_DESC":
-				order = SearchOrder.COMPANY_DESC;
+				page = new PageRequest(fromBound2, recordsPerPage, Direction.DESC, "company.name");
 				break;
 			default:
-				order = SearchOrder.NAME_ASC;
+				page = new PageRequest(fromBound2, recordsPerPage, Direction.ASC, "name");
 				break;
 			}
 		}else {
-			order = SearchOrder.NAME_ASC;
+			page = new PageRequest(fromBound2, recordsPerPage, Direction.ASC, "name");
 			orderBy = "NAME_ASC";
 		}
 		
-		List<ComputerDto> computersToReturn = computerService.search(name, order, fromBound2, recordsPerPage);
+		List<ComputerDto> computersToReturn = computerService.search(name, page);
+		
 		long searchResultsSize = 0;
 		if (name == null) {
 			searchResultsSize = computerService.count();

@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataRetrievalFailureException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,14 +26,20 @@ public class ComputerServiceImpl implements ComputerService{
 	@Override
 	@Transactional(readOnly=true)
 	public ComputerDto findById(int id) throws DataRetrievalFailureException {
-		return dtoMapper.dtoFromComputer(computerRepo.findById(id));
+		return dtoMapper.dtoFromComputer(computerRepo.findOne(id));
 	}
 
 	@Override
 	@Transactional(readOnly=true)
-	public List<ComputerDto> search(String name, SearchOrder orderBy, int fromBound, int maxResult)
+	public List<ComputerDto> search(String name, Pageable pageable)
 			throws DataRetrievalFailureException {
-		List<Computer> computers = computerRepo.search(name, orderBy, fromBound, maxResult);
+		Page<Computer> computers = null;
+		if (name != null) {
+			 computers = computerRepo.findByNameContaining(name, pageable);
+		}else {
+			computers = computerRepo.findAll(pageable);
+		}
+		
 		List<ComputerDto> dtos = new ArrayList<>();
 		for (Computer computer : computers) {
 			dtos.add(dtoMapper.dtoFromComputer(computer));
@@ -61,7 +69,7 @@ public class ComputerServiceImpl implements ComputerService{
 	@Override
 	@Transactional(readOnly=true)
 	public long countFiltered(String name) throws DataAccessException{
-		return computerRepo.countFiltered(name);
+		return computerRepo.countByNameContaining(name);
 	}
 
 	public ComputerRepository getComputerRepo() {

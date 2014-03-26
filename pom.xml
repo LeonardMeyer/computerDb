@@ -37,6 +37,7 @@
 		<javassist.version>3.12.1.GA</javassist.version>
 
 		<springframework.version>4.0.2.RELEASE</springframework.version>
+		<springdata.version>1.5.1.RELEASE</springdata.version>
 		<hibernate-valid.version>5.0.3.Final</hibernate-valid.version>
 		<hibernate-entity.version>4.3.1.Final</hibernate-entity.version>
 		<querydsl-apt.version>3.3.2</querydsl-apt.version>
@@ -82,6 +83,12 @@
 				<artifactId>spring-context</artifactId>
 				<version>${springframework.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.springframework.data</groupId>
+				<artifactId>spring-data-jpa</artifactId>
+				<version>${springdata.version}</version>
+			</dependency>
+
 			<!-- Joda -->
 			<dependency>
 				<groupId>joda-time</groupId>
@@ -161,7 +168,7 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -183,7 +190,7 @@
 		</plugins>
 	</build>
 
-	
+
 	<reporting>
 		<plugins>
 			<plugin>

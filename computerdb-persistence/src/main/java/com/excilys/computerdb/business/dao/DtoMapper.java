@@ -44,7 +44,7 @@ public class DtoMapper {
 		if (dto.getCompanyId() == -1) {;
 			comp.setCompany(null);
 		}else {
-			comp.setCompany(companyRepository.findById(dto.getCompanyId()));
+			comp.setCompany(companyRepository.findOne(dto.getCompanyId()));
 		}
 		
 		return comp;
