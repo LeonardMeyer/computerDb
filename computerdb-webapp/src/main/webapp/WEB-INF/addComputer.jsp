@@ -2,7 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <jsp:include page="include/header.jsp" />
-
+<%@ page session="false" %>
 <section id="main">
 
 	<c:choose>

@@ -18,6 +18,7 @@
 		<h1 class="fill">
 			<a href="${pageContext.request.contextPath}/Computer/Search"><spring:message code="appHeader"/></a>
 			<span style="float: right">
+			<a href="<c:url value="/Logout" />" > Logout</a>
 			<!-- Détermination des URL de switch de lang en fonction de la page en cours -->
 				<c:choose> 
 					<c:when test="${page == 'dashboard'}">

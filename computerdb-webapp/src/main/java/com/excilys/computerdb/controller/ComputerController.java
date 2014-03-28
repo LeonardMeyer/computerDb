@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -45,6 +46,7 @@ public class ComputerController {
 	}
 
 	// Affiche la page d'ajout d'un computer
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/New", method = RequestMethod.GET)
 	public ModelAndView displayAddComputer() {
 		ModelAndView mav = new ModelAndView("addComputer", "computer",
@@ -152,6 +154,7 @@ public class ComputerController {
 
 	// Edition d'un computer et redirection
 	@RequestMapping(value = "/Save", method = RequestMethod.POST)
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ModelAndView save(@Valid @ModelAttribute("computer") ComputerDto computer,
 			BindingResult result, SessionStatus status) {
 
@@ -179,6 +182,7 @@ public class ComputerController {
 	}
 
 	// Supprime un computer depuis un id
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/{computerId}/Delete", method = RequestMethod.POST)
 	public String delete(@PathVariable int computerId) {
 		computerService.delete(computerId);

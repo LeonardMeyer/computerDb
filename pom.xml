@@ -38,10 +38,10 @@
 
 		<springframework.version>4.0.2.RELEASE</springframework.version>
 		<springdata.version>1.5.1.RELEASE</springdata.version>
+		<springsecurity.version>3.2.3.RELEASE</springsecurity.version>
 		<hibernate-valid.version>5.0.3.Final</hibernate-valid.version>
 		<hibernate-entity.version>4.3.1.Final</hibernate-entity.version>
-		<querydsl-apt.version>3.3.2</querydsl-apt.version>
-		<querydsl-jpa.version>3.3.2</querydsl-jpa.version>
+		<querydsl.version>3.3.2</querydsl.version>
 	</properties>
 
 	<dependencyManagement>
@@ -75,6 +75,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
+				<artifactId>spring-aop</artifactId>
+				<version>${springframework.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
 				<artifactId>spring-webmvc</artifactId>
 				<version>${springframework.version}</version>
 			</dependency>
@@ -88,7 +93,21 @@
 				<artifactId>spring-data-jpa</artifactId>
 				<version>${springdata.version}</version>
 			</dependency>
-
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-web</artifactId>
+				<version>${springsecurity.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-config</artifactId>
+				<version>${springsecurity.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-taglibs</artifactId>
+				<version>${springsecurity.version}</version>
+			</dependency>
 			<!-- Joda -->
 			<dependency>
 				<groupId>joda-time</groupId>
@@ -159,12 +178,12 @@
 			<dependency>
 				<groupId>com.mysema.querydsl</groupId>
 				<artifactId>querydsl-apt</artifactId>
-				<version>${querydsl-apt.version}</version>
+				<version>${querydsl.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.mysema.querydsl</groupId>
 				<artifactId>querydsl-jpa</artifactId>
-				<version>${querydsl-jpa.version}</version>
+				<version>${querydsl.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
