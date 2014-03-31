@@ -1,6 +1,5 @@
 package com.excilys.computerdb.business.dao;
 
-import org.springframework.context.annotation.Profile;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.data.domain.Page;
@@ -8,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.excilys.computerdb.business.domain.Computer;
 
-@Profile(value="jpa")
 public interface ComputerRepository extends JpaRepository<Computer, Integer>{
 	/**
 	 * Repository class for <code>Computer</code> domain objects All method names are

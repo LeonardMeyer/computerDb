@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,13 +33,45 @@ public class ComputerServiceImpl implements ComputerService{
 
 	@Override
 	@Transactional(readOnly=true)
-	public List<ComputerDto> search(String name, Pageable pageable)
+	public List<ComputerDto> search(String name, int nbElem, String orderBy, int fromBound)
 			throws DataRetrievalFailureException {
+		PageRequest page = null;
+		int pageNumber = fromBound/nbElem;
+		switch (orderBy) {
+		case "NAME_ASC":
+			page = new PageRequest(pageNumber, nbElem, Direction.ASC, "name");
+			break;
+		case "NAME_DESC":
+			page = new PageRequest(pageNumber, nbElem, Direction.DESC, "name");
+			break;
+		case "INTRO_ASC":
+			page = new PageRequest(pageNumber, nbElem, Direction.ASC, "introduced");
+			break;
+		case "INTRO_DESC":
+			page = new PageRequest(pageNumber, nbElem, Direction.DESC, "introduced");
+			break;
+		case "DISC_ASC":
+			page = new PageRequest(pageNumber, nbElem, Direction.ASC, "discontinued");;
+			break;
+		case "DISC_DESC":
+			page = new PageRequest(pageNumber, nbElem, Direction.DESC, "discontinued");
+			break;
+		case "COMPANY_ASC":
+			page = new PageRequest(pageNumber, nbElem, Direction.ASC, "company.name");
+			break;
+		case "COMPANY_DESC":
+			page = new PageRequest(pageNumber, nbElem, Direction.DESC, "company.name");
+			break;
+		default:
+			page = new PageRequest(pageNumber, nbElem, Direction.ASC, "name");
+			break;
+		}
+	
 		Page<Computer> computers = null;
 		if (name != null) {
-			 computers = computerRepo.findByNameContaining(name, pageable);
+			 computers = computerRepo.findByNameContaining(name, page);
 		}else {
-			computers = computerRepo.findAll(pageable);
+			computers = computerRepo.findAll(page);
 		}
 		
 		List<ComputerDto> dtos = new ArrayList<>();

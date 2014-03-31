@@ -12,6 +12,7 @@
 		<module>computerdb-persistence</module>
 		<module>computerdb-service</module>
 		<module>computerdb-webapp</module>
+		<module>computerdb-ws</module>
 	</modules>
 
 	<properties>
@@ -35,6 +36,7 @@
 		<logback.version>1.1.1</logback.version>
 		<slf4j-api.version>1.7.6</slf4j-api.version>
 		<javassist.version>3.12.1.GA</javassist.version>
+		<jaxws.version>1.9</jaxws.version>
 
 		<springframework.version>4.0.2.RELEASE</springframework.version>
 		<springdata.version>1.5.1.RELEASE</springdata.version>
@@ -86,6 +88,26 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-context</artifactId>
+				<version>${springframework.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-core</artifactId>
+				<version>${springframework.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-beans</artifactId>
+				<version>${springframework.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-web</artifactId>
+				<version>${springframework.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-tx</artifactId>
 				<version>${springframework.version}</version>
 			</dependency>
 			<dependency>
@@ -184,6 +206,12 @@
 				<groupId>com.mysema.querydsl</groupId>
 				<artifactId>querydsl-jpa</artifactId>
 				<version>${querydsl.version}</version>
+			</dependency>
+			<!-- Web Service -->
+			<dependency>
+				<groupId>org.jvnet.jax-ws-commons.spring</groupId>
+				<artifactId>jaxws-spring</artifactId>
+				<version>${jaxws.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

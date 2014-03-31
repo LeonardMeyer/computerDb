@@ -46,8 +46,8 @@ public class ComputerController {
 	}
 
 	// Affiche la page d'ajout d'un computer
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/New", method = RequestMethod.GET)
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ModelAndView displayAddComputer() {
 		ModelAndView mav = new ModelAndView("addComputer", "computer",
 				new ComputerDto());
@@ -78,45 +78,12 @@ public class ComputerController {
 		if (fromBound != null) {
 			fromBound2 = Integer.parseInt(fromBound);
 		}
-		
-		//Détermination de l'ordre de retour
-		PageRequest page = null;
-		if (orderBy != null) {
-			switch (orderBy) {
-			case "NAME_ASC":
-				page = new PageRequest(fromBound2, recordsPerPage, Direction.ASC, "name");
-				break;
-			case "NAME_DESC":
-				page = new PageRequest(fromBound2, recordsPerPage, Direction.DESC, "name");
-				break;
-			case "INTRO_ASC":
-				page = new PageRequest(fromBound2, recordsPerPage, Direction.ASC, "introduced");
-				break;
-			case "INTRO_DESC":
-				page = new PageRequest(fromBound2, recordsPerPage, Direction.DESC, "introduced");
-				break;
-			case "DISC_ASC":
-				page = new PageRequest(fromBound2, recordsPerPage, Direction.ASC, "discontinued");;
-				break;
-			case "DISC_DESC":
-				page = new PageRequest(fromBound2, recordsPerPage, Direction.DESC, "discontinued");
-				break;
-			case "COMPANY_ASC":
-				page = new PageRequest(fromBound2, recordsPerPage, Direction.ASC, "company.name");
-				break;
-			case "COMPANY_DESC":
-				page = new PageRequest(fromBound2, recordsPerPage, Direction.DESC, "company.name");
-				break;
-			default:
-				page = new PageRequest(fromBound2, recordsPerPage, Direction.ASC, "name");
-				break;
-			}
-		}else {
-			page = new PageRequest(fromBound2, recordsPerPage, Direction.ASC, "name");
+
+		if (orderBy == null) {
 			orderBy = "NAME_ASC";
 		}
 		
-		List<ComputerDto> computersToReturn = computerService.search(name, page);
+		List<ComputerDto> computersToReturn = computerService.search(name, recordsPerPage, orderBy, fromBound2);
 		
 		long searchResultsSize = 0;
 		if (name == null) {
@@ -182,8 +149,8 @@ public class ComputerController {
 	}
 
 	// Supprime un computer depuis un id
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/{computerId}/Delete", method = RequestMethod.POST)
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public String delete(@PathVariable int computerId) {
 		computerService.delete(computerId);
 		return "redirect:/Computer/Search";

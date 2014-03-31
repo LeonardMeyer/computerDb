@@ -1,0 +1,28 @@
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.excilys</groupId>
+		<artifactId>computerdb</artifactId>
+		<version>2.2.0-RELEASE</version>
+	</parent>
+
+	<artifactId>computerdb-ws</artifactId>
+	<packaging>war</packaging>
+	<name>computerdb-ws Maven Webapp</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.excilys</groupId>
+			<artifactId>computerdb-service</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jvnet.jax-ws-commons.spring</groupId>
+			<artifactId>jaxws-spring</artifactId>
+		</dependency>
+	</dependencies>
+	<build>
+		<finalName>computerdb-ws</finalName>
+	</build>
+</project>

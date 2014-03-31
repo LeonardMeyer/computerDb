@@ -2,7 +2,7 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:jsp="http://java.sun.com/xml/ns/javaee/jsp"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-	id="WebApp_ID" version="3.0">
+	id="webapp" version="3.0">
 	<display-name>computerDb</display-name>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
@@ -18,11 +18,6 @@
 			<taglib-location>/WEB-INF/PaginationTag.tld</taglib-location>
 		</taglib>
 	</jsp-config>
-
-	<context-param>
-		<param-name>spring.profiles.active</param-name>
-		<param-value>jpa</param-value>
-	</context-param>
 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>

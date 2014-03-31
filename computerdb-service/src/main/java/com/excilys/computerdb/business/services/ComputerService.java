@@ -30,7 +30,7 @@ public interface ComputerService{
 	 * 
 	 * @return a <code>Collection</code> of <code>Computer</code>s
 	 */
-	List<ComputerDto> search(String name, Pageable pageable) throws DataRetrievalFailureException;
+	List<ComputerDto> search(String name, int nbElem, String orderBy, int fromBound) throws DataRetrievalFailureException;
 
 	/**
 	 * Save a <code>Company</code> to the data store, either inserting or

@@ -15,27 +15,26 @@
 
 	<!-- - Enable auto-detection of annotations -->
 	<context:component-scan base-package="com.excilys.computerdb.business.dao" />
-	<jpa:repositories base-package="com.excilys.computerdb.business.dao" transaction-manager-ref="txManager"/>
+	<jpa:repositories base-package="com.excilys.computerdb.business.dao"
+		transaction-manager-ref="txManager" />
 
 	<!-- - Automatic JNDI datasource lookup -->
 	<jee:jndi-lookup id="dataSource" jndi-name="java:/computerDS"
 		expected-type="javax.sql.DataSource" />
 
 	<!-- JPA -->
-	<beans profile="jpa">
-		<bean id="entityManagerFactory"
-			class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-			<property name="dataSource" ref="dataSource" />
-			<property name="persistenceProviderClass" value="org.hibernate.jpa.HibernatePersistenceProvider" />
-			<property name="packagesToScan" value="com.excilys.computerdb.business" />
-			<property name="jpaProperties">
-				<props>
-					<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
-					<prop key="hibernate.connection.release_mode">after_transaction</prop>
-					<prop key="hibernate.show_sql">true</prop>
-				</props>
-			</property>
-		</bean>
-	</beans>
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="persistenceProviderClass"
+			value="org.hibernate.jpa.HibernatePersistenceProvider" />
+		<property name="packagesToScan" value="com.excilys.computerdb.business" />
+		<property name="jpaProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>
+	</bean>
 
 </beans>
