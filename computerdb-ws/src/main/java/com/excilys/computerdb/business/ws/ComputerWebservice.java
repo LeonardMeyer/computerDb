@@ -1,26 +1,22 @@
 package com.excilys.computerdb.business.ws;
 
-import java.util.List;
-
-import javax.jws.WebMethod;
-import javax.jws.WebService;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DataRetrievalFailureException;
 
-import com.excilys.computerdb.business.domain.ComputerDto;
 
-@WebService
 public interface ComputerWebservice {
-
-	@WebMethod
-	public List<ComputerDto> search(String name, int nbElem, String orderBy, int fromBound) 
-			throws DataRetrievalFailureException;
-	
-	@WebMethod
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
 	public long count() throws DataAccessException;
 	
-	@WebMethod
-	public long countFiltered(String name) throws DataAccessException;
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("find/{name}")
+	public long countFiltered(@PathParam("name") String name) throws DataAccessException;
 
 }

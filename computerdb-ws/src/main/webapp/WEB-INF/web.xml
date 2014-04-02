@@ -2,24 +2,24 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:jsp="http://java.sun.com/xml/ns/javaee/jsp"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-	id="ws" version="3.0">
-	
-    <context-param>
+	id="webapp" version="3.0">
+
+	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/applicationContext-servlet.xml</param-value>
 	</context-param>
-    
+
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-	
+
 	<servlet>
-		<servlet-name>jaxws-servlet</servlet-name>
-		<servlet-class>com.sun.xml.ws.transport.http.servlet.WSSpringServlet</servlet-class>
+		<servlet-name>cxf-servlet</servlet-name>
+		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>jaxws-servlet</servlet-name>
-		<url-pattern>/ws</url-pattern>
+		<servlet-name>cxf-servlet</servlet-name>
+		<url-pattern>/*</url-pattern>
 	</servlet-mapping>
 
 </web-app>

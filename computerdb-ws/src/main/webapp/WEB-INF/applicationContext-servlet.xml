@@ -1,22 +1,24 @@
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns="http://www.springframework.org/schema/beans"
-	xmlns:ws="http://jax-ws.dev.java.net/spring/core" xmlns:wss="http://jax-ws.dev.java.net/spring/servlet"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://jax-ws.dev.java.net/spring/servlet
-        http://jax-ws.dev.java.net/spring/servlet.xsd
-        http://jax-ws.dev.java.net/spring/core
-        http://jax-ws.dev.java.net/spring/core.xsd">
+        http://cxf.apache.org/jaxrs
+		http://cxf.apache.org/schemas/jaxrs.xsd
+		 http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd ">
 
-    <import resource="classpath:service-servlet.xml" />
-    
+	<import resource="classpath:service-servlet.xml" />
+
 	<!-- - Enable WS -->
-	<wss:binding url="/ws">
-		<wss:service>
-			<ws:service bean="#computerService" />
-		</wss:service>
-	</wss:binding>
-
-	<bean id="computerService" class="com.excilys.computerdb.business.ws.ComputerWebserviceImpl" />
+	<jaxrs:server id="computerService" transportId="http://cxf.apache.org/transports/http">
+		<jaxrs:serviceBeans>
+			<bean class="com.excilys.computerdb.business.ws.ComputerWebserviceImpl" />
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+			<bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider" />
+		</jaxrs:providers>
+	</jaxrs:server>
 
 </beans>

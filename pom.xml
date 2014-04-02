@@ -23,7 +23,7 @@
 		<computerdb-persistence.version>2.2.0-RELEASE</computerdb-persistence.version>
 		<computerdb-binding.version>2.2.0-RELEASE</computerdb-binding.version>
 		<computerdb-service.version>2.2.0-RELEASE</computerdb-service.version>
-
+		<computerdb-ws.version>2.2.0-RELEASE</computerdb-ws.version>
 		<jstl.version>1.2</jstl.version>
 		<jsp-api.version>2.0</jsp-api.version>
 		<validation-api.version>1.1.0.Final</validation-api.version>
@@ -36,7 +36,10 @@
 		<logback.version>1.1.1</logback.version>
 		<slf4j-api.version>1.7.6</slf4j-api.version>
 		<javassist.version>3.12.1.GA</javassist.version>
-		<jaxws.version>1.9</jaxws.version>
+		<cxf-jaxrs.version>2.7.10</cxf-jaxrs.version>
+		<jackson.version>1.9.13</jackson.version>
+		<jaxb.version>1.0.4.Final</jaxb.version>
+
 
 		<springframework.version>4.0.2.RELEASE</springframework.version>
 		<springdata.version>1.5.1.RELEASE</springdata.version>
@@ -44,6 +47,7 @@
 		<hibernate-valid.version>5.0.3.Final</hibernate-valid.version>
 		<hibernate-entity.version>4.3.1.Final</hibernate-entity.version>
 		<querydsl.version>3.3.2</querydsl.version>
+
 	</properties>
 
 	<dependencyManagement>
@@ -209,9 +213,29 @@
 			</dependency>
 			<!-- Web Service -->
 			<dependency>
-				<groupId>org.jvnet.jax-ws-commons.spring</groupId>
-				<artifactId>jaxws-spring</artifactId>
-				<version>${jaxws.version}</version>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-frontend-jaxrs</artifactId>
+				<version>${cxf-jaxrs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.jackson</groupId>
+				<artifactId>jackson-jaxrs</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.jackson</groupId>
+				<artifactId>jackson-jaxrs</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jboss.spec.javax.xml.bind</groupId>
+				<artifactId>jboss-jaxb-api_2.2_spec</artifactId>
+				<version>${jaxb.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-ws-policy</artifactId>
+				<version>${cxf-jaxrs.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
